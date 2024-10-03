@@ -1,0 +1,31 @@
+[
+    {
+        "text": "What's On",
+        "url": "/"
+    },
+    {
+        "text": "Get Involved",
+        "url": "/get-involved/"
+    },
+    {
+        "text": "StuFF",
+        "url": "/stuff/"
+    },
+    {
+        "text": "Nottingham New Theatre",
+        "url": "/",
+        "logo": true
+    },
+    {
+        "text": "Alumni",
+        "url": "/alumni/"
+    },
+    {
+        "text": "Technical",
+        "url": "/technical/"
+    },
+    {
+        "text": "About",
+        "url": "/about/"
+    }
+]
