@@ -12,5 +12,11 @@ export default defineNuxtConfig({
     '/': { prerender: true }
   },
 
-  compatibilityDate: '2024-10-03'
+  compatibilityDate: '2024-10-03',
+
+  site: {
+    url: 'https://newtheatre.org.uk',
+    name: 'The Nottingham New Theatre',
+    defaultLocale: 'en',
+  }
 })
