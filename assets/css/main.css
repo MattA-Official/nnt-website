@@ -19,10 +19,16 @@ body {
 }
 
 /* Main content styles */
-main {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
     max-width: 1140px;
     margin: 0 auto;
-    padding: 5rem;
+    padding: 1rem 5rem;
     width: 100%;
 }
 
@@ -39,7 +45,14 @@ a:active {
 
 /* Can be modified as needed for different screen sizes */
 @media (max-width: 768px) {
-    main {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
         padding: 2rem;
     }
 }
