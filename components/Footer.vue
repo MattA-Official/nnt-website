@@ -25,7 +25,7 @@ const { data } = await useAsyncData('footer', () => queryContent('/_data/footer'
 
 <style scoped>
 footer {
-    background-color: #333;
+    background-color: var(--primary-bg-color);
     color: #fff;
     padding: 1rem;
     width: 100%;

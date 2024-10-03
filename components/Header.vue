@@ -31,8 +31,9 @@ const isOpen = ref(false);
 
 <style scoped>
 header {
-    background-color: #333;
+    background-color: #5d2656;
     color: #fff;
+    box-shadow: 0px 7px 7px 0 rgba(13, 2, 11, 0.3);
     width: 100%;
     padding: 1rem;
 }
