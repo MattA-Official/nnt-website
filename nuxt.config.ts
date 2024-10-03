@@ -18,5 +18,7 @@ export default defineNuxtConfig({
     url: 'https://newtheatre.org.uk',
     name: 'The Nottingham New Theatre',
     defaultLocale: 'en',
-  }
+  },
+
+  css: ['~/assets/css/main.css']
 })

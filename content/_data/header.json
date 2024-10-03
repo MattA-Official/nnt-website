@@ -1,7 +1,7 @@
 [
     {
         "text": "What's On",
-        "url": "/"
+        "url": "/whats-on"
     },
     {
         "text": "Get Involved",
@@ -10,11 +10,6 @@
     {
         "text": "StuFF",
         "url": "/stuff/"
-    },
-    {
-        "text": "Nottingham New Theatre",
-        "url": "/",
-        "logo": true
     },
     {
         "text": "Alumni",
