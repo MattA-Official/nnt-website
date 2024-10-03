@@ -36,3 +36,10 @@ a:focus,
 a:active {
     text-decoration: underline;
 }
+
+/* Can be modified as needed for different screen sizes */
+@media (max-width: 768px) {
+    main {
+        padding: 2rem;
+    }
+}
