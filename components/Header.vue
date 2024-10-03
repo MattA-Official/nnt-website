@@ -113,8 +113,9 @@ nav a:focus {
     nav ul.open {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: left;
         gap: 1rem;
+        padding: 1rem 0;
     }
 }
 </style>
