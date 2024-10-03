@@ -15,6 +15,4 @@ Furthermore, make sure you sign up to our [mailing list](https://newtheatre.us3.
 
 <iframe src="https://calendar.google.com/calendar/u/0/embed?height=500&wkst=2&bgcolor=%23ffffff&ctz=Europe/London&hl=en&title&src=Y19hNDE3MjcxNzA1MDE0MzFlNjIwZTE0MjVlNTRmZDYxZjkwZmQ4MjM0OGFiNTlhZjQ5NWM5OTViNWEzNjYwNTljQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23F09300" style="border:none; width: 100%; height:500px"/>
 
-<hr class="w-75">
-
 <!--iframe styles: style="border-width:0" width="1000" height="500" frameborder="0" scrolling="no"-->
