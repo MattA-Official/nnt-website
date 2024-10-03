@@ -6,7 +6,7 @@ title: Home
 # England's only fully student-run theatre
 ::
 
-## Welcome!
+# Welcome!
 
 Welcome to the Nottingham New Theatre! We are the only entirely student-run theatre in England. Producing over thirty shows a year, they range from 'A Midsummer Night's Dream' to contemporaries plays, as well as a host of original student written pieces.
 
