@@ -1,5 +1,6 @@
 <template>
     <footer>
+        <hr />
         <div class="container">
             <ul>
                 <!-- TODO: socials will go here -->
@@ -33,7 +34,7 @@ footer {
 
 .container {
     display: flex;
-    max-width: 1140px;
+    max-width: var(--page-max-width);
     margin: 0 auto;
     padding: 4rem;
     width: 100%;

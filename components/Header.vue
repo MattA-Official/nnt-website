@@ -41,7 +41,7 @@ header {
 nav {
     display: flex;
     justify-content: space-between;
-    max-width: 1140px;
+    max-width: var(--page-max-width);
     margin: 0 auto;
     padding: 0 4rem;
     width: 100%;

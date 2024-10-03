@@ -1,7 +1,23 @@
 :root {
     --primary-bg-color: #150813;
     --primary-text-color: #f8f9fa;
-    --link-color: #ffc425;
+    --alt-text-color: #495057;
+    --link-color: var(--nnt-orange);
+
+    /* Brand colors */
+    --nnt-orange: #ffc425;
+    --nnt-orange-dark: #be8b00;
+    --nnt-orange-light: #ffd258;
+    --nnt-orange-lighter: #ffe08b;
+    --nnt-purple: #a54499;
+    --nnt-purple-dark: #5d2656;
+    --nnt-purple-light: #bd5fb1;
+    --nnt-purple-lighter: #cc83c3;
+    --nnt-alt: #2d9189;
+
+    /* Page layout */
+    --page-max-width: 1140px;
+    --media-query-small: 768px;
 }
 
 /* Reset some default browser styles */
@@ -32,7 +48,7 @@ h4,
 h5,
 h6,
 p {
-    max-width: 1140px;
+    max-width: var(--page-max-width);
     margin: 0 auto;
     padding: 1rem 5rem;
     width: 100%;
