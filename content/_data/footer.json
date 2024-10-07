@@ -1,11 +1,11 @@
 [
     {
         "text": "Show Resources",
-        "url": "/show-resources/"
+        "url": "/show-resources"
     },
     {
         "text": "Branding",
-        "url": "/branding/"
+        "url": "/branding"
     },
     {
         "text": "History Site",
@@ -17,6 +17,6 @@
     },
     {
         "text": "Mailing List",
-        "url": "/mailinglist/"
+        "url": "/mailinglist"
     }
 ]
