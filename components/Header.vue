@@ -1,9 +1,9 @@
 <template>
     <header>
         <nav class="wide">
-            <nuxt-link to="/">
+            <nuxt-link to="/" aria-label="Home | The Nottingham New Theatre">
                 <Logo />
-            </nuxt-link> <!-- TODO: Replace with logo -->
+            </nuxt-link>
             <ul :class="{ open: isOpen }">
                 <li v-for="link in data.body" :key="link.url">
                     <nuxt-link :to="link.url" @click="isOpen = false">{{ link.text }}</nuxt-link>
@@ -12,9 +12,9 @@
         </nav>
         <nav class="narrow">
             <div>
-                <nuxt-link to="/">
+                <nuxt-link to="/" aria-label="Home | The Nottingham New Theatre">
                     <Logo />
-                </nuxt-link> <!-- TODO: Replace with logo -->
+                </nuxt-link>
                 <button @click="isOpen = !isOpen" :class="{ open: isOpen }">
                     ☰ <!-- TODO: Replace with actual icon + change to X when menu is open -->
                 </button>
