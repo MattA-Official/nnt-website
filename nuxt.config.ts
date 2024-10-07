@@ -5,7 +5,8 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/image',
     '@nuxt/fonts',
-    '@nuxtjs/seo'
+    '@nuxtjs/seo',
+    '@nuxt/icon'
   ],
 
   routeRules: {

@@ -16,10 +16,15 @@
                     <Logo />
                 </nuxt-link>
                 <button @click="isOpen = !isOpen" :class="{ open: isOpen }">
-                    ☰ <!-- TODO: Replace with actual icon + change to X when menu is open -->
+                    <span v-if="isOpen">
+                        <Icon class="icon" name="ic:round-clear" />
+                    </span>
+                    <span v-else>
+                        <Icon class="icon" name="ic:round-menu" />
+                    </span>
                 </button>
             </div>
-            <ul :class="{ open: isOpen }"> <!-- TODO: Add animation -->
+            <ul :class="{ open: isOpen }" class="animated-menu">
                 <li v-for="link in data.body" :key="link.url">
                     <nuxt-link :to="link.url" @click="isOpen = false">{{ link.text }}</nuxt-link>
                 </li>
@@ -36,7 +41,6 @@ const isOpen = ref(false);
 <style scoped>
 header {
     background-color: #5d2656;
-    color: #fff;
     box-shadow: 0px 7px 7px 0 rgba(13, 2, 11, 0.3);
     width: 100%;
     padding: 1rem;
@@ -62,7 +66,7 @@ nav ul {
 }
 
 nav a {
-    color: #fff;
+    color: var(--primary-text-color);
 }
 
 button {
@@ -72,7 +76,7 @@ button {
 nav a:hover,
 nav a:active,
 nav a:focus {
-    color: #ffc425;
+    color: var(--link-color);
     text-decoration: none;
 }
 
@@ -102,6 +106,7 @@ nav a:focus {
     button {
         display: block;
         background-color: transparent;
+        color: var(--primary-text-color);
         border: none;
         font-size: 1.5rem;
         cursor: pointer;
@@ -121,6 +126,21 @@ nav a:focus {
         align-items: left;
         gap: 1rem;
         padding: 1rem 0;
+    }
+
+    .animated-menu {
+        animation: slide-in 0.5s forwards;
+    }
+
+
+    @keyframes slide-in {
+        from {
+            transform: translateY(-100%);
+        }
+
+        to {
+            transform: translateY(0);
+        }
     }
 }
 </style>
