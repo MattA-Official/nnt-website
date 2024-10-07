@@ -7,7 +7,7 @@
 
 <style scoped>
 div {
-    max-width: 1140px;
+    max-width: var(--page-max-width);
     width: 100%;
     margin: 0 auto;
     padding: 1rem 5rem;

@@ -1,7 +1,7 @@
 :root {
     --primary-bg-color: #150813;
     --primary-text-color: #f8f9fa;
-    --alt-text-color: #495057;
+    --alt-text-color: #292b2e;
     --link-color: var(--nnt-orange);
 
     /* Brand colors */
@@ -46,12 +46,24 @@ h2,
 h3,
 h4,
 h5,
-h6,
+h6 {
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    padding: 3rem 5rem 0.2rem;
+    width: 100%;
+}
+
+
 p {
     max-width: var(--page-max-width);
     margin: 0 auto;
-    padding: 1rem 5rem;
+    padding: 1rem 5rem 0;
     width: 100%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 a {
