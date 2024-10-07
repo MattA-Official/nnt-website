@@ -21,5 +21,14 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
   },
 
-  css: ['~/assets/css/main.css']
+  css: ['~/assets/css/main.css'],
+
+  icon: {
+    customCollections: [
+      {
+        prefix: 'icon',
+        dir: './assets/icons'
+      },
+    ],
+  }
 })

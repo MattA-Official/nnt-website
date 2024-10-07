@@ -17,10 +17,10 @@
                 </nuxt-link>
                 <button @click="isOpen = !isOpen" :class="{ open: isOpen }">
                     <span v-if="isOpen">
-                        <Icon class="icon" name="ic:round-clear" />
+                        <Icon class="icon" name="icon:clear" />
                     </span>
                     <span v-else>
-                        <Icon class="icon" name="ic:round-menu" />
+                        <Icon class="icon" name="icon:menu" />
                     </span>
                 </button>
             </div>
