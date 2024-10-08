@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-const { data } = await useAsyncData('footer', () => queryContent('/_data/footer').findOne())
+const { data } = await useAsyncData('footer', () => queryContent('/_nav/footer').findOne())
 </script>
 
 <style scoped>

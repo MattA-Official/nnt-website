@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-const { data } = await useAsyncData('header', () => queryContent('/_data/header').findOne());
+const { data } = await useAsyncData('header', () => queryContent('/_nav/header').findOne());
 const isOpen = ref(false);
 </script>
 
