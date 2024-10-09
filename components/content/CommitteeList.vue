@@ -1,42 +1,33 @@
 <template>
-  <div>
-    <div class="card">
-      <h3>Under Construction 🏗️</h3>
-      <p>This section is currently under construction. Please check back later...</p>
+  <div class="committee-list">
+    <div class="grid">
+      <Card v-for="member in data.committee" :key="member.id" :member="member" v-show="member.name" />
     </div>
   </div>
 </template>
 
 <script setup>
-
+const { data } = await useAsyncData('committee', () => queryContent('/_data/committee').findOne());
 </script>
 
 <style scoped>
-div {
+.committee-list {
   max-width: var(--page-max-width);
-  width: 100%;
   margin: 0 auto;
-  padding: 1rem 5rem;
-}
-
-.card {
+  padding: 3rem 5rem 0.2rem;
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
 }
 
-h3 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 0.5rem;
-  text-align: center;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
 }
 
-p {
-  font-size: 1.2rem;
-  padding: 0.5rem;
-  text-align: center;
+/* Can be modified as needed for different screen sizes */
+@media (max-width: 768px) {
+  .committee-list {
+    padding: 2rem;
+  }
 }
 </style>

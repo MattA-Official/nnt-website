@@ -1,0 +1,146 @@
+# This file contains the list of committee members
+# Each member has the following attributes:
+# - name: the name of the member
+# - email: the email of the member
+# - alt_email: the alternative email of the member
+# - pronouns: the pronouns of the member
+# - bio: the bio of the member
+# - role: the role of the member
+# - image: the image of the member
+# - email: the email of the member (Do not include @newtheatre.org.uk)
+# - groups: used to group members together ("executive", "backstage", "coordinator", "foh", etc.)
+
+committee:
+- role: President
+  name: Lily Hagen
+  email: president
+  image: ''
+  rollover: ''
+
+- role: Secretary and Welfare Officer
+  name: Maggie Campion
+  email: secretary
+  image: ''
+  rollover: ''
+
+- role: Treasurer
+  name: T Kenyon
+  email: treasurer
+  image: ''
+  rollover: ''
+
+- role: Theatre Manager
+  name: Charlotte Reese
+  email: theatremanager
+  image: ''
+  rollover: ''
+  group: backstage
+
+- role: In-House Coordinator
+  name: Charlotte Reay
+  email: inhouse
+  group: coordinator
+  image: ''
+  rollover: ''
+
+
+- role: Studio Coordinator
+  name: Alessia Lowcock
+  email: studio
+  group: coordinator
+  alias_email: stuff
+  alias_role: StuFF Coordinator
+  image: ''
+
+- role: External Relations Manager
+  name: ''
+  email: external
+  image: ''
+  rollover: ''
+  group: coordinator
+  alias_email: edinburgh
+  alias_role: Edinburgh Coordinator
+
+- role: Front of House Manager
+  name: Juhi Andon
+  email: boxoffice
+  image: ''
+
+- role: Company Stage Manager
+  name: Bhavneeta Khodiyar
+  email: bk.csm
+  group: backstage
+  image: ''
+
+- role: Company Stage Manager
+  name: Lauren Isherwood
+  email: li.csm
+  image: ''
+  rollover: ''
+
+- role: Company Workshop Manager
+  name: ''
+  email: cmc
+  group: backstage
+  image: ''
+  rollover: ''
+
+- role: Technical Manager
+  name: Rachel Hoddes
+  email: techmanager
+  group: backstage
+  image: ''
+  rollover: ''
+
+- role: Company Technical Director
+  name: Ben Bromley
+  email: bb.techdirector
+  group: backstage
+  image: ''
+
+- role: Company Technical Director
+  name: ''
+  email: cr.techdirector
+  image: ''
+  rollover: ''
+
+- role: Marketing Coordinator
+  name: Kieran Bell
+  email: kieran.marketing
+  image: ''
+  rollover: ''
+
+- role: Marketing Coordinator
+  name: Alex Vale
+  email: alex.marketing
+  image: ''
+  rollover: ''
+
+- role: Creatives Coordinator
+  name: Ali Seaborne
+  email: creatives
+  image: ''
+  rollover: ''
+
+- role: Events and Engagment Officer
+  name: ''
+  email: engagement
+  image: ''
+  rollover: ''
+
+- role: Costume, Props and Make-Up Manager
+  name: Tara Wynne-Edwards
+  email: costume
+  group: backstage
+  image: ''
+
+- role: Social and Fundraising Coordinator
+  name: Kayla Sibanda
+  email: social
+  image: ''
+
+- role: Archivist
+  name: Meg Isaac
+  email: itmanager
+  image: ''
+  rollover: ''
