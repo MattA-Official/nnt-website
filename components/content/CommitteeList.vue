@@ -1,7 +1,7 @@
 <template>
   <div class="committee-list">
     <div class="grid">
-      <Card v-for="member in data.committee" :key="member.id" :member="member" v-show="member.name" />
+      <CommitteeCard v-for="member in data.committee" :key="member.id" :member="member" v-show="member.name" />
     </div>
   </div>
 </template>

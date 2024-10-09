@@ -7,8 +7,9 @@
       <h3 class="card-title">{{ member.name }}</h3>
       <div class="role-container">
         <p class="card-role">{{ member.role }}</p>
-        <a v-if="member.email" :href="'mailto:' + member.email + '@newtheatre.org.uk'" class="email">
+        <a v-if="member.email" :href="'mailto:' + member.email + '@newtheatre.org.uk'" class="email" target="_blank">
           <Icon class="icon" name="icon:email" />
+          <!-- TODO: Make this accessible to screenreaders -->
           <span class="popover">{{ member.email }}@newtheatre.org.uk</span>
         </a>
       </div>
