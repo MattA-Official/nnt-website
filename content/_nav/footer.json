@@ -1,22 +1,46 @@
-[
-    {
-        "text": "Show Resources",
-        "url": "/show-resources"
-    },
-    {
-        "text": "Branding",
-        "url": "/branding"
-    },
-    {
-        "text": "History Site",
-        "url": "http://history.newtheatre.org.uk/"
-    },
-    {
-        "text": "Photo Gallery",
-        "url": "http://photos.newtheatre.org.uk/"
-    },
-    {
-        "text": "Mailing List",
-        "url": "/mailinglist"
-    }
-]
+{
+    "links": [
+        {
+            "text": "Show Resources",
+            "url": "/show-resources"
+        },
+        {
+            "text": "Branding",
+            "url": "/branding"
+        },
+        {
+            "text": "History Site",
+            "url": "http://history.newtheatre.org.uk/"
+        },
+        {
+            "text": "Photo Gallery",
+            "url": "http://photos.newtheatre.org.uk/"
+        },
+        {
+            "text": "Mailing List",
+            "url": "/mailinglist"
+        }
+    ],
+    "socials": [
+        {
+            "icon": "email",
+            "url": "mailto:boxoffice@newtheatre.org.uk"
+        },
+        {
+            "icon": "facebook",
+            "url": "https://www.facebook.com/thenottinghamnewtheatre/"
+        },
+        {
+            "icon": "twitter",
+            "url": "https://twitter.com/thenewtheatre"
+        },
+        {
+            "icon": "instagram",
+            "url": "https://www.instagram.com/nottinghamnewtheatre/"
+        },
+        {
+            "icon": "",
+            "url": "https://su.nottingham.ac.uk/activities/view/new-theatre"
+        }
+    ]
+}
