@@ -38,6 +38,7 @@ button {
     border-radius: 0.5rem;
     cursor: pointer;
     font-size: 1em;
+    width: fit-content;
 }
 
 button:disabled {
