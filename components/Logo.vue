@@ -12,8 +12,8 @@ div {
 }
 
 #logo {
-  width: 12rem;
-  height: auto;
+  width: auto;
+  height: 2.6rem;
 }
 
 #squares {
@@ -27,8 +27,8 @@ div {
 
   #squares {
     display: block;
-    width: 2rem;
-    height: 2rem;
+    width: auto;
+    height: 2.6rem;
   }
 }
 </style>

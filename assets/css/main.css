@@ -22,17 +22,17 @@
 
 /* Reset some default browser styles */
 * {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html,
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     /* TODO: Replace this with brand font */
     background-color: var(--primary-bg-color);
     color: var(--primary-text-color);
-    line-height: 1.6;
 }
 
 html,
@@ -40,7 +40,7 @@ body {
     min-height: 100%;
 }
 
-/* Main content styles */
+/* Text Styles */
 h1,
 h2,
 h3,
@@ -55,15 +55,9 @@ h6 {
 
 
 p {
-    max-width: var(--page-max-width);
     margin: 0 auto;
     padding: 1rem 5rem 0;
     width: 100%;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
 }
 
 a {
@@ -75,6 +69,13 @@ a:hover,
 a:focus,
 a:active {
     text-decoration: underline;
+}
+
+/* Image Styles */
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 /* Can be modified as needed for different screen sizes */

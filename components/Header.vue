@@ -1,32 +1,50 @@
 <template>
     <header>
         <nav class="wide">
-            <nuxt-link to="/" aria-label="Home | The Nottingham New Theatre">
+            <NuxtLink to="/" aria-label="Home | The Nottingham New Theatre">
                 <Logo />
-            </nuxt-link>
+            </NuxtLink>
             <ul :class="{ open: isOpen }">
-                <li v-for="link in data.body" :key="link.url">
-                    <nuxt-link :to="link.url" @click="isOpen = false">{{ link.text }}</nuxt-link>
+                <li v-for="link in data.links" :key="link.url">
+                    <NuxtLink :to="link.url">
+                        <template v-if="link.button">
+                            <NavButton :type="link.type">
+                                {{ link.text }}
+                            </NavButton>
+                        </template>
+                        <template v-else>
+                            {{ link.text }}
+                        </template>
+                    </NuxtLink>
                 </li>
             </ul>
         </nav>
         <nav class="narrow">
             <div>
-                <nuxt-link to="/" aria-label="Home | The Nottingham New Theatre">
+                <NuxtLink to="/" aria-label="Home | The Nottingham New Theatre">
                     <Logo />
-                </nuxt-link>
-                <button @click="isOpen = !isOpen" :class="{ open: isOpen }">
+                </NuxtLink>
+                <button class="icon" @click="isOpen = !isOpen">
                     <span v-if="isOpen">
-                        <Icon class="icon" name="icon:clear" />
+                        <Icon name="icon:clear" />
                     </span>
                     <span v-else>
-                        <Icon class="icon" name="icon:menu" />
+                        <Icon name="icon:menu" />
                     </span>
                 </button>
             </div>
-            <ul :class="{ open: isOpen }" class="animated-menu">
-                <li v-for="link in data.body" :key="link.url">
-                    <nuxt-link :to="link.url" @click="isOpen = false">{{ link.text }}</nuxt-link>
+            <ul :class="{ open: isOpen }" class="menu">
+                <li v-for="link in data.links" :key="link.url">
+                    <NuxtLink :to="link.url">
+                        <template v-if="link.button">
+                            <NavButton :type="link.type">
+                                {{ link.text }}
+                            </NavButton>
+                        </template>
+                        <template v-else>
+                            {{ link.text }}
+                        </template>
+                    </NuxtLink>
                 </li>
             </ul>
         </nav>
@@ -40,42 +58,36 @@ const isOpen = ref(false);
 
 <style scoped>
 header {
-    background-color: #5d2656;
-    box-shadow: 0px 7px 7px 0 rgba(13, 2, 11, 0.3);
-    width: 100%;
-    padding: 1rem;
+    border-bottom: 1px solid #232323;
+    background: #292829;
 }
 
 nav {
-    display: flex;
-    justify-content: space-between;
     max-width: var(--page-max-width);
+    display: flex;
+    padding: 1.2rem 3rem;
     margin: 0 auto;
-    padding: 0 4rem;
-    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
 }
 
 nav ul {
     list-style: none;
     display: flex;
-    width: 100%;
     justify-content: right;
     gap: 1rem;
     padding: 0;
     align-items: center;
 }
 
-nav a {
+a {
     color: var(--primary-text-color);
 }
 
-button {
-    display: none;
-}
-
-nav a:hover,
-nav a:active,
-nav a:focus {
+a:hover,
+a:active,
+a:focus {
     color: var(--link-color);
     text-decoration: none;
 }
@@ -86,7 +98,6 @@ nav a:focus {
 
 /* Can be modified as needed for different screen sizes */
 @media (max-width: 768px) {
-
     .wide {
         display: none;
     }
@@ -103,44 +114,24 @@ nav a:focus {
         width: 100%;
     }
 
-    button {
-        display: block;
-        background-color: transparent;
-        color: var(--primary-text-color);
+    .narrow .icon {
+        background: none;
         border: none;
-        font-size: 1.5rem;
         cursor: pointer;
+        color: var(--primary-text-color);
+        font-size: 2rem;
     }
 
-    nav {
-        padding: 0 1rem;
-    }
-
-    nav ul {
+    .narrow ul {
         display: none;
-    }
-
-    nav ul.open {
-        display: flex;
         flex-direction: column;
-        align-items: left;
         gap: 1rem;
-        padding: 1rem 0;
+        padding: 4rem 0;
+        width: 100%;
     }
 
-    .animated-menu {
-        animation: slide-in 0.5s forwards;
-    }
-
-
-    @keyframes slide-in {
-        from {
-            transform: translateY(-100%);
-        }
-
-        to {
-            transform: translateY(0);
-        }
+    .narrow ul.open {
+        display: flex;
     }
 }
 </style>
