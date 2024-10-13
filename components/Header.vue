@@ -58,6 +58,7 @@ const isOpen = ref(false);
 
 <style scoped>
 header {
+    background-color: var(--header-bg-color);
     border-bottom: 1px solid #232323;
 }
 
