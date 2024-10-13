@@ -59,7 +59,6 @@ const isOpen = ref(false);
 <style scoped>
 header {
     border-bottom: 1px solid #232323;
-    background: #292829;
 }
 
 nav {
