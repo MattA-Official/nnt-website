@@ -1,5 +1,6 @@
 :root {
-    --primary-bg-color: #292829;
+    --primary-bg-color: #1e1e1e;
+    --header-bg-color: #292b2e;
     --primary-text-color: #f8f9fa;
     --alt-text-color: #292b2e;
     --link-color: var(--nnt-orange);
@@ -49,14 +50,12 @@ h5,
 h6 {
     max-width: var(--page-max-width);
     margin: 0 auto;
-    padding: 3rem 5rem 0.2rem;
     width: 100%;
 }
 
 
 p {
     margin: 0 auto;
-    padding: 1rem 5rem 0;
     width: 100%;
 }
 
@@ -87,7 +86,5 @@ img {
     h4,
     h5,
     h6,
-    p {
-        padding: 2rem;
-    }
+    p {}
 }
