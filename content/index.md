@@ -10,7 +10,7 @@ title: Home
 England's only fully student-run theatre
 ::
 
-::PageContent
+::ContentPage
  ::ContentSection{type=focus}
  ## About Us
  
@@ -18,25 +18,25 @@ England's only fully student-run theatre
  ::
 
  ::ContentSection
-  ::Columns
-   ::Container
+  ::ContentColumns
+   ::ContentContainer
    ## What's On?
 
-   *We're still working on this :(*
+   :WhatsOn
 
    Sign up to our [mailing list](/mailing-list) to stay up-to-date with shows and news!
 
-   ::LinkButton{type=secondary url=/whats-on}
+   ::ContentButton{type=secondary url=/whats-on}
    See More
    ::
    ::
 
-   ::Container
+   ::ContentContainer
    ## Get Involved
 
    To get involved with our shows and join the society, please purchase membership from the [UoNSU website](https://su.nottingham.ac.uk/activities/view/new-theatre). We have something for everyone - if you’re looking for something more casual why not come along to a [Stagecraft](/get-involved/stagecraft) or [Creatives](/get-involved/creatives) session?
 
-   ::LinkButton{url=/get-involved}
+   ::ContentButton{url=/get-involved}
    Learn More
    ::
    ::
