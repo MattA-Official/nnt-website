@@ -43,16 +43,27 @@ body {
 
 /* Text Styles */
 
-h2>a {
+h2>a,
+h3>a {
     text-decoration: none;
     color: var(--primary-text-color);
 }
 
-h2>a:hover {
+h2>a:hover,
+h2>a:focus,
+h2>a:active,
+h3>a:hover,
+h3>a:focus,
+h3>a:active {
     text-decoration: none;
 }
 
-h2>a:hover::after {
+h2>a:hover::after,
+h2>a:focus::after,
+h2>a:active::after,
+h3>a:hover::after,
+h3>a:focus::after,
+h3>a:active::after {
     content: " 🔗";
     font-size: 0.8em;
     color: var(--alt-text-color);

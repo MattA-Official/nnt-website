@@ -8,22 +8,12 @@
 
 <style scoped>
 div {
-  max-width: var(--page-max-width);
   width: 100%;
-  margin: 0 auto;
-  padding: 1rem 5rem;
 }
 
 iframe {
   width: 100%;
   height: 350px;
   border: none;
-}
-
-/* Can be modified as needed for different screen sizes */
-@media (max-width: 768px) {
-  div {
-    padding: 1rem 2rem;
-  }
 }
 </style>

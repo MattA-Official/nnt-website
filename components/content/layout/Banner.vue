@@ -1,12 +1,9 @@
 <template>
-    <section class="hero" :style="{ backgroundImage: `url(${img})` }">
-        <div class="hero-content">
+    <section class="banner" :style="{ backgroundImage: `url(${img})` }">
+        <div class="banner-content">
             <h1>
                 <ContentSlot :use="$slots.default" unwrap="h1" />
             </h1>
-            <p>
-                <ContentSlot :use="$slots.subtitle" unwrap="h1" />
-            </p>
         </div>
     </section>
 </template>
@@ -18,9 +15,9 @@ defineProps({
 </script>
 
 <style scoped>
-.hero {
+.banner {
     width: 100%;
-    height: 80vh;
+    height: 40vh;
     background-size: cover;
     background-position: center;
     display: flex;
@@ -31,7 +28,7 @@ defineProps({
     padding: 2.5rem 3.125rem;
 }
 
-.hero::before {
+.banner::before {
     content: '';
     position: absolute;
     top: 0;
@@ -43,7 +40,7 @@ defineProps({
     z-index: 1;
 }
 
-.hero-content {
+.banner-content {
     max-width: var(--page-max-width);
     position: relative;
     z-index: 2;
@@ -51,31 +48,18 @@ defineProps({
 
 h1 {
     font-weight: 800;
-    line-height: 5.4rem;
     text-shadow: 0px 0px 21.2px rgba(0, 0, 0, 0.80);
-    font-size: 4.5rem;
-}
-
-p {
-    font-size: 1.6rem;
-    font-weight: 600;
-    line-height: 2.4rem;
-    text-shadow: 0px 0px 21.2px rgba(0, 0, 0, 0.80);
-    margin-top: 1rem;
+    font-size: 3.5rem;
 }
 
 @media (max-width: 768px) {
-    .hero {
+    .banner {
         padding: 2.5rem 1.25rem;
     }
 
     h1 {
-        font-size: 3rem;
-        line-height: 3.6rem;
-    }
-
-    p {
-        line-height: 2rem;
+        font-size: 2.8rem;
+        line-height: 3.2rem;
     }
 }
 </style>
