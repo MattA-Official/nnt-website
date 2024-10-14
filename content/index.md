@@ -3,7 +3,7 @@ title: Home
 ---
 
 <!-- TODO: Change to local image -->
-::hero{img="https://newtheatre.org.uk/static/images/banner/whats-on.jpg"} 
+::Hero{img="/images/banners/whats-on.jpg"}
 # Nottingham New Theatre
 
 #subtitle
