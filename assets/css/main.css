@@ -43,6 +43,21 @@ body {
 
 /* Text Styles */
 
+h2>a {
+    text-decoration: none;
+    color: var(--primary-text-color);
+}
+
+h2>a:hover {
+    text-decoration: none;
+}
+
+h2>a:hover::after {
+    content: " 🔗";
+    font-size: 0.8em;
+    color: var(--alt-text-color);
+}
+
 a {
     color: var(--link-color);
     text-decoration: none;
