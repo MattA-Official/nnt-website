@@ -12,6 +12,7 @@
     align-items: flex-start;
     gap: 1.5em;
     align-self: stretch;
+    max-width: var(--page-max-width);
 }
 
 @media (max-width: 768px) {
