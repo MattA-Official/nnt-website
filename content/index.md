@@ -4,17 +4,42 @@ title: Home
 
 <!-- TODO: Change to local image -->
 ::hero{img="https://newtheatre.org.uk/static/images/banner/whats-on.jpg"} 
-# England's only fully student-run theatre
+# Nottingham New Theatre
+
+#subtitle
+England's only fully student-run theatre
 ::
 
-# Welcome!
+::PageContent
+ ::ContentSection{type=focus}
+ ## About Us
+ 
+ We are The Nottingham New Theatre, a student-run theatre. As part of the University of Nottingham Student’s Union (UoNSU) we have a membership of over 200 students every year. Students join us from a variety of courses and disciplines; from English to Engineering, undergraduate and postgraduate. Whether you’re keen to act, direct, work backstage or just watch an amazing show, there’s a place for you here! Any questions - contact us via [Facebook](https://www.facebook.com/thenottinghamnewtheatre) or reach out to the relevant member of [committee](/committee "Committee")!
+ ::
 
-Welcome to the Nottingham New Theatre! We are the only entirely student-run theatre in England. Producing over thirty shows a year, they range from 'A Midsummer Night's Dream' to contemporaries plays, as well as a host of original student written pieces.
+ ::ContentSection
+  ::Columns
+   ::Container
+   ## What's On?
 
-**To buy a membership please follow this** [**link**](https://su.nottingham.ac.uk/activities/view/new-theatre) **to the Student Union website!**
+   *We're still working on this :(*
 
-If you have any questions, please contact us via our [Facebook page](https://www.facebook.com/thenottinghamnewtheatre), or contact the relevant member of [committee](/about#committee "Committee").
+   Sign up to our [mailing list](/mailing-list) to stay up-to-date with shows and news!
 
-Furthermore, make sure you sign up to our [mailing list](https://newtheatre.us3.list-manage.com/subscribe?u=ce5311ce46fe45638f90f4022&id=97e4899eb8) to keep up with all of our shows and news!
+   ::LinkButton{type=secondary url=/whats-on}
+   See More
+   ::
+   ::
 
-:Calendar
+   ::Container
+   ## Get Involved
+
+   To get involved with our shows and join the society, please purchase membership from the [UoNSU website](https://su.nottingham.ac.uk/activities/view/new-theatre). We have something for everyone - if you’re looking for something more casual why not come along to a [Stagecraft](/get-involved/stagecraft) or [Creatives](/get-involved/creatives) session?
+
+   ::LinkButton{url=/get-involved}
+   Learn More
+   ::
+   ::
+  ::
+ ::
+::
