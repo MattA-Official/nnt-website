@@ -23,7 +23,7 @@
         </section>
         <section>
             <div class="legal">
-                <p>{{ data.legal.copyright }}</p>
+                <p>&copy; {{ data.legal.copyright }}</p>
                 <span class="hide">&bull;</span>
                 <span>
                     <p>Part of <a href="https://su.nottingham.ac.uk">UoNSU</a></p>
