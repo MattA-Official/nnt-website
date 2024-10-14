@@ -1,5 +1,5 @@
 <template>
-    <div class="hero" :style="{ backgroundImage: `url(${img})` }">
+    <section class="hero" :style="{ backgroundImage: `url(${img})` }">
         <div class="hero-content">
             <h1>
                 <ContentSlot :use="$slots.default" unwrap="h1" />
@@ -8,7 +8,7 @@
                 <ContentSlot :use="$slots.subtitle" unwrap="h1" />
             </p>
         </div>
-    </div>
+    </section>
 </template>
 
 <script setup>
