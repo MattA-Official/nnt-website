@@ -1,0 +1,28 @@
+/* TEAM */
+  Designer / Developer: Matt Adcock
+  Website: https://matt-is.gay
+  Contact: hello@matt-is.gay
+
+/* THANKS */
+  Designer / Developer: Sam Osborne
+  Bio: http://history.newtheatre.org.uk/people/sam_osborne/
+  Contact: sam [at] samosborne.me
+
+  Developer: Will Pimblett
+  Bio: https://history.newtheatre.org.uk/people/will_pimblett/
+
+  David Taylor
+  Bio: https://history.newtheatre.org.uk/people/david_taylor
+
+  Izzy de Bono
+  Bio: https://history.newtheatre.org.uk/people/izzy_de_bono/
+
+  Ben Woodford
+  Bio: https://history.newtheatre.org.uk/people/ben_woodford/
+
+/* SITE */
+  Last update: 
+  Language: English
+  Doctype: HTML5
+  Build System: NuxtJS
+  IDE: VScode
