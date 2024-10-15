@@ -87,17 +87,13 @@ img {
     height: auto;
 }
 
+ul {
+    padding: 0 1.5rem 0;
+}
 
-
-
-/* Can be modified as needed for different screen sizes */
-@media (max-width: 768px) {
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    p {}
+hr {
+    border: 0;
+    border-top: 2px solid #676767;
+    margin: 1.5rem 0;
+    width: 100%;
 }
