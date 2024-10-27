@@ -12,6 +12,7 @@
     <Banner :img="page.banner.img" v-if="page?.banner">
       <h1>{{ page.banner.text }}</h1>
     </Banner>
+    <TableOfContents :page />
     <ContentPage>
       <slot />
     </ContentPage>
