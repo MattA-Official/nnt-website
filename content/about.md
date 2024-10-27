@@ -1,13 +1,11 @@
 ---
 title: About
 layout: toc
+banner:
+    img: /images/banners/about.jpg
+    text: About the Nottingham New Theatre
 ---
 
-::Banner{img="/images/banners/about.jpg"}
-# About the Nottingham New Theatre
-::
-
-::ContentPage
 ::ContentSection
 Based on University Park, Nottingham, we are the only student run theatre in England. We produce over 30 plays per year, across two venues (an 80-seat Auditorium and 30-seat Studio); send shows to the [National Student Drama Festival](http://nsdf.org.uk) and [Edinburgh Festival Fringe](http://edfringe.com); and even host our own [Student Fringe Festival](/stuff) every June.
 
@@ -43,7 +41,7 @@ We strive for accessibility and access to all, so please [contact us](mailto:box
 
 The Nottingham New Theatre is run by an elected committee – all still students! The committee keep the theatre running day-to-day and more long term, so if you have a question just contact one of these lovely people and they'll help you out.
 
-:CommitteeList
+ :CommitteeList
 ::
 
 ::ContentSection
@@ -58,5 +56,4 @@ More recently, our two Studio spaces were built in 2013 and our newest season Un
  ::ContentButton{url="https://history.newtheatre.org.uk" type="secondary"}
  Read more about our past on the History Site
  ::
-::
 ::
