@@ -18,3 +18,15 @@ defineProps({
   page: Object
 })
 </script>
+
+<style scoped>
+.table-of-contents {
+  position: sticky;
+  top: 0;
+  padding: 2rem;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 0.5rem;
+  margin-left: auto;
+}
+</style>
