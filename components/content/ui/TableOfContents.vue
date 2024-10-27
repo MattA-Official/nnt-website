@@ -1,6 +1,5 @@
 <template>
   <div class="table-of-contents">
-    <pre>{{ page.body.toc }}</pre>
     <ul>
       <li v-for="link in page.body.toc.links" :key="link.id">
         <a :href="'#' + link.id">{{ link.text }}</a>
