@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   ],
 
   routeRules: {
-    '/': { prerender: true },
+    '/**': { prerender: true }, // TEMP: Prerender all routes - will need to be more selective in future
     '/mailing-list': { redirect: 'https://newtheatre.us3.list-manage.com/subscribe?u=ce5311ce46fe45638f90f4022&id=97e4899eb8' }
   },
 
