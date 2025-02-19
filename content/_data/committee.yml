@@ -30,7 +30,7 @@ committee:
   rollover: ''
 
 - role: Theatre Manager
-  name: Charlotte Reese
+  name: Matt Adcock
   email: theatremanager
   image: ''
   rollover: ''
@@ -43,7 +43,6 @@ committee:
   image: ''
   rollover: ''
 
-
 - role: Studio Coordinator
   name: Alessia Lowcock
   email: studio
@@ -53,7 +52,7 @@ committee:
   image: ''
 
 - role: External Relations Manager
-  name: ''
+  name: Ben Adeniji
   email: external
   image: ''
   rollover: ''
@@ -73,13 +72,13 @@ committee:
   image: ''
 
 - role: Company Stage Manager
-  name: Lauren Isherwood
+  name: Jimmy Pays
   email: li.csm
   image: ''
   rollover: ''
 
 - role: Company Workshop Manager
-  name: ''
+  name: Sara Hodgson
   email: cmc
   group: backstage
   image: ''
@@ -117,13 +116,13 @@ committee:
   rollover: ''
 
 - role: Creatives Coordinator
-  name: Ali Seaborne
+  name: Charlie Lowe
   email: creatives
   image: ''
   rollover: ''
 
-- role: Events and Engagment Officer
-  name: ''
+- role: Events and Engagement Coordinator
+  name: Aisling Macdonald
   email: engagement
   image: ''
   rollover: ''
@@ -140,7 +139,7 @@ committee:
   image: ''
 
 - role: Archivist
-  name: Meg Isaac
+  name: Charlotte Clampitt-Dix
   email: itmanager
   image: ''
   rollover: ''
