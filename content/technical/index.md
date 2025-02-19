@@ -11,6 +11,19 @@ banner_image: tech.jpg
 ---
 
 ::ContentSection
+
+::Alert{type=error}
+We are unable to take bookings or provide access to our spaces at this time.
+::
+
+::Alert{type=warning}
+Our building is currently closed. Please check back for updates.
+::
+
+::Alert{type=info}
+This information may be out of date.
+::
+
 By default, we do not permanently install any equipment into our spaces other than cable runs, leaving them fully adaptable and equipment available.
 
 For loading into either of our venues, Cherry Tree Hill can be used, but parking is only available in University Visitors' Car Parks (restrictions apply).
@@ -63,7 +76,7 @@ There is no installed seating, and a rake can be achieved using [Prolyte StageDe
 
 * Various 13A sockets at floor level
 
-### Dressing Room
+## Dressing Room
 
 * Dimensions: 3 x 8.5m
 * Changing Rooms: Three cubicles, each measuring 2 x 2m
