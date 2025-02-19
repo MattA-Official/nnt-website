@@ -2,7 +2,7 @@
   <div class="card">
     <img v-if="member.image" :src="member.image" alt="Member Photo" class="card-img">
     <!-- TODO: Update placeholder image -->
-    <img v-else src="https://via.placeholder.com/150" alt="Placeholder Image" class="card-img">
+    <img v-else src="https://placehold.co/150" alt="Placeholder Image" class="card-img">
     <div class="card-body">
       <h3 class="card-title">{{ member.name }}</h3>
       <div class="role-container">
