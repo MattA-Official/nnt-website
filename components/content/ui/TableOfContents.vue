@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 
 const props = defineProps({
   page: Object
@@ -15,7 +15,16 @@ const activeId = ref('')
 let observer = null
 let visibleHeadings = new Set()
 
-onMounted(() => {
+const setupObserver = () => {
+  // Cleanup existing observer if any
+  if (observer) {
+    observer.disconnect()
+  }
+
+  // Reset state
+  visibleHeadings.clear()
+  activeId.value = ''
+
   observer = new IntersectionObserver((entries) => {
     // Update our set of visible headings based on intersection changes
     entries.forEach(entry => {
@@ -59,11 +68,22 @@ onMounted(() => {
     threshold: [0, 1]
   })
 
-  // Observe all section headings (h1-h4 only)
-  document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]').forEach(heading => {
-    observer.observe(heading)
-  })
-})
+  // Wait for next tick to ensure DOM is updated
+  setTimeout(() => {
+    document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]').forEach(heading => {
+      observer.observe(heading)
+    })
+  }, 0)
+}
+
+onMounted(setupObserver)
+
+// Watch for page changes
+watch(() => props.page, (newPage, oldPage) => {
+  if (newPage !== oldPage) {
+    setupObserver()
+  }
+}, { deep: true })
 
 onUnmounted(() => {
   if (observer) {
