@@ -1,12 +1,74 @@
 <template>
   <div class="table-of-contents">
-    <TableOfContentsItem :links="page.body.toc.links" />
+    <TableOfContentsItem :links="page.body.toc.links" :activeId="activeId" />
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { ref, onMounted, onUnmounted } from 'vue'
+
+const props = defineProps({
   page: Object
+})
+
+const activeId = ref('')
+let observer = null
+let visibleHeadings = new Set()
+
+onMounted(() => {
+  observer = new IntersectionObserver((entries) => {
+    // Update our set of visible headings based on intersection changes
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        visibleHeadings.add(entry.target.id)
+      } else {
+        visibleHeadings.delete(entry.target.id)
+      }
+    })
+
+    // Get positions of all currently visible headings
+    const headingsWithPosition = Array.from(visibleHeadings)
+      .map(id => {
+        const element = document.getElementById(id)
+        return {
+          id,
+          top: element.getBoundingClientRect().top
+        }
+      })
+      .filter(heading => heading.top <= window.innerHeight * 0.2)
+      .sort((a, b) => a.top - b.top)
+
+    if (headingsWithPosition.length > 0) {
+      // Take the topmost visible heading
+      activeId.value = headingsWithPosition[0].id
+    } else {
+      // If no headings are in view, find the closest one above
+      const headingsAbove = Array.from(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]'))
+        .map(el => ({
+          id: el.id,
+          top: el.getBoundingClientRect().top
+        }))
+        .filter(heading => heading.top < 0)
+        .sort((a, b) => b.top - a.top)
+
+      activeId.value = headingsAbove[0]?.id || ''
+    }
+  }, {
+    // Observe headings with a bit more margin to ensure we catch them early
+    rootMargin: '0px 0px -90% 0px',
+    threshold: [0, 1]
+  })
+
+  // Observe all section headings (h1-h4 only)
+  document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]').forEach(heading => {
+    observer.observe(heading)
+  })
+})
+
+onUnmounted(() => {
+  if (observer) {
+    observer.disconnect()
+  }
 })
 </script>
 

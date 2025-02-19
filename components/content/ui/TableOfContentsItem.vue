@@ -1,8 +1,9 @@
 <template>
     <ul>
         <li v-for="link in links" :key="link.id">
-            <a :href="'#' + link.id">{{ link.text }}</a>
-            <TableOfContentsItem v-if="link.children && link.children.length" :links="link.children" />
+            <a :href="'#' + link.id" :class="{ active: activeId === link.id }">{{ link.text }}</a>
+            <TableOfContentsItem v-if="link.children && link.children.length" :links="link.children"
+                :activeId="activeId" />
         </li>
     </ul>
 </template>
@@ -12,6 +13,10 @@ defineProps({
     links: {
         type: Array,
         required: true
+    },
+    activeId: {
+        type: String,
+        default: ''
     }
 })
 </script>
@@ -58,5 +63,23 @@ defineProps({
 
 .table-of-contents>ul>li>a {
     font-weight: 500;
+}
+
+.table-of-contents a.active {
+    color: var(--nnt-orange);
+    position: relative;
+}
+
+.table-of-contents a.active::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 0;
+    /* Changed from 50% */
+    height: 1.2rem;
+    /* Fixed height instead of 100% */
+    width: 4px;
+    background-color: var(--nnt-orange);
+    border-radius: 2px;
 }
 </style>
