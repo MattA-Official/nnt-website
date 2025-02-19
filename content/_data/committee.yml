@@ -143,3 +143,18 @@ committee:
   email: itmanager
   image: ''
   rollover: ''
+
+groups:
+  - name: Backstage
+    email: backstage
+    roles:
+      - Theatre Manager
+      - Company Stage Manager
+      - Company Workshop Manager
+      - Technical Manager
+      - Company Technical Director
+      - Costume, Props and Make-Up Manager
+  - name: Coordinators
+    roles:
+      - In-House Coordinator
+      - Studio Coordinator

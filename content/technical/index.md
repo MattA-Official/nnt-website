@@ -9,22 +9,27 @@ banner_text: 'Nottingham New Theatre: Full Technical Specification'
 banner_image: tech.jpg
 
 ---
+
+::ContentSection
 By default, we do not permanently install any equipment into our spaces other than cable runs, leaving them fully adaptable and equipment available.
 
 For loading into either of our venues, Cherry Tree Hill can be used, but parking is only available in University Visitors' Car Parks (restrictions apply).
 
-For more information on any of our spaces, please contact {% include committee.html role="theatremanager" format="inline" %}. For further information on our Technical Specification, please contact {% include committee.html role="techmanager" format="inline" %}
+For more information on any of our spaces, please contact :CommitteeContact{role="Theatre Manager" group="Backstage"}. For further information on our Technical Specification, please contact :CommitteeContact{role="Technical Manager" group="Backstage"}
+::
 
+::ContentSection
 ## Venues
 
-||Auditorium|Studio A|Studio B
-**Capacity** | 86 (max.) | 30 | 30
-**Stage Dimensions** | 7.2 x 7.8m (Can be extended by 1.2m at the front) | 9 x 5m | 10 x 5.4m
-**Stage Floor** | MDF | Dance floor | Dance floor
-**Grid Height** | 3.8m | 3m | 2.5m
-**Largest entrance to stage** | 1.3 x 1.9m | 1.4 x 1.9m | 0.8 x 1.9m
-**Load in via** | Main foyer | Fire escape | Studio foyer door
-**CAD Drawings** | [Theatre Rig (pdf)]({{ site.baseurl }}/static/technical/Theatre-Rig.pdf) <br /> [Theatre Stage Floor (pdf)]({{ site.baseurl }}/static/technical/Theatre-Stage-Floor.pdf) | [Studio A (pdf)]({{ site.baseurl }}/static/technical/Studio-A-Full.pdf)
+|                               | Auditorium                                                                                                                           | Studio A                                              | Studio B          |
+|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|-------------------|
+| **Capacity**                  | 86 (max.)                                                                                                                            | 30                                                    | 30                |
+| **Stage Dimensions**          | 7.2 x 7.8m (Can be extended by 1.2m at the front)                                                                                    | 9 x 5m                                                | 10 x 5.4m         |
+| **Stage Floor**               | MDF                                                                                                                                  | Dance floor                                           | Dance floor       |
+| **Grid Height**               | 3.8m                                                                                                                                 | 3m                                                    | 2.5m              |
+| **Largest entrance to stage** | 1.3 x 1.9m                                                                                                                           | 1.4 x 1.9m                                            | 0.8 x 1.9m        |
+| **Load in via**               | Main foyer                                                                                                                           | Fire escape                                           | Studio foyer door |
+| **CAD Drawings**              | [Theatre Rig (pdf)](/static/technical/Theatre-Rig.pdf) <br /> [Theatre Stage Floor (pdf)](/static/technical/Theatre-Stage-Floor.pdf) | [Studio A (pdf)](/static/technical/Studio-A-Full.pdf) |                   |
 
 ### NNT Auditorium
 
@@ -65,32 +70,34 @@ There is no installed seating, and a rake can be achieved using [Prolyte StageDe
 * 1x Accessible toilet
 * Kitchenette featuring: fridge, kettle, microwave, toaster, sink
 * Dressing table with illuminated mirror, seats 6
+::
 
+::ContentSection
 ## Equipment
 
 ### Lighting
 
-| Fixture | Quantity |
-| --- | :---: |
-| Selecon Rama 1k Fresnel | 12 |
-| Selecon Acclaim 750W Fresnel | 15 |
-| CCT Minuette 650W Fresnel | 2 |
-| Strand Patt 123 1k | 2 |
-| ETC Source 4 Jr Zoom 575W | 10 |
-| ETC Source 4 750W | 1 |
-| Selecon Condenser | 2 |
-| Selecon Acclaim Zoomspot | 5 |
-| Chauvet ColorDash PARQuad 18 | 6 |
-| PAR 64 | 14 |
-| PAR 16 | 14 |
-| Strand Patt 137 | 1 |
-| Chauvet Q Spot 460 LED | 4 |
-| Martin Atomic 3000 Strobe | 1 |
-| Strand Patt 223 | 7 |
-| Strand Batten | 2 |
-| Pulsar Strobe | 1 |
-| Old Acclaims | 4 |
-| Floods | 4 |
+| Fixture                      | Quantity |
+|------------------------------|:--------:|
+| Selecon Rama 1k Fresnel      |    12    |
+| Selecon Acclaim 750W Fresnel |    15    |
+| CCT Minuette 650W Fresnel    |    2     |
+| Strand Patt 123 1k           |    2     |
+| ETC Source 4 Jr Zoom 575W    |    10    |
+| ETC Source 4 750W            |    1     |
+| Selecon Condenser            |    2     |
+| Selecon Acclaim Zoomspot     |    5     |
+| Chauvet ColorDash PARQuad 18 |    6     |
+| PAR 64                       |    14    |
+| PAR 16                       |    14    |
+| Strand Patt 137              |    1     |
+| Chauvet Q Spot 460 LED       |    4     |
+| Martin Atomic 3000 Strobe    |    1     |
+| Strand Patt 223              |    7     |
+| Strand Batten                |    2     |
+| Pulsar Strobe                |    1     |
+| Old Acclaims                 |    4     |
+| Floods                       |    4     |
 
 
 #### Control
@@ -164,8 +171,9 @@ There is no installed seating, and a rake can be achieved using [Prolyte StageDe
 * BenQ MH733 projector w/ rigging mount
 * Epson EB-92 projector w/ rigging mount
 * QLab with Video License
+::
 
-
+::ContentSection
 ## Set and Scenery
 
 
@@ -184,8 +192,9 @@ There is no installed seating, and a rake can be achieved using [Prolyte StageDe
 * 19x Prolyte StageDex 2 x 1m
 * 3x Prolyte StageDex 1 x 1m
 * Legs available at 20, 40, 60, and 80cm.
+::
 
-
+::ContentSection
 ## Safety
 
 * All scenery, drapes, and backdrops must be fire resistant
@@ -193,3 +202,4 @@ There is no installed seating, and a rake can be achieved using [Prolyte StageDe
 * All electrical equipment must be in good condition, have a current PAT certificate, have appropriate protective circuits, and be wired in accordance with current IEE regulations.
 * All equipment and staff must comply with the Electricity at Work Regulations 1989.
 * Electrical or rigging equipment may be disallowed at any time if it is deemed dangerous or inappropriate.
+::
