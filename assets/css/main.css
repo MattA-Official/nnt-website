@@ -98,3 +98,20 @@ hr {
     margin: 1.5rem 0;
     width: 100%;
 }
+
+/* Table Styles */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #676767;
+    padding: 0.5rem;
+}
+
+th {
+    background-color: var(--header-bg-color);
+    color: var(--primary-text-color);
+}
