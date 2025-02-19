@@ -1,5 +1,7 @@
 <template>
-    <section class="hero" :style="{ backgroundImage: `url(${img})` }">
+    <section class="hero">
+        <NuxtImg :src="img" class="hero-image" format="webp" fit="cover" loading="lazy" placeholder />
+        <div class="overlay"></div>
         <div class="hero-content">
             <h1>
                 <ContentSlot :use="$slots.default" unwrap="h1" />
@@ -21,25 +23,27 @@ defineProps({
 .hero {
     width: 100%;
     height: 80vh;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
     position: relative;
     padding: 2.5rem 3.125rem;
+    overflow: hidden;
 }
 
-.hero::before {
-    content: '';
+.hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    /* Dark overlay for better text visibility */
     z-index: 1;
 }
 
@@ -47,6 +51,12 @@ defineProps({
     max-width: var(--page-max-width);
     position: relative;
     z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 h1 {
