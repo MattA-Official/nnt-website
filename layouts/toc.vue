@@ -16,7 +16,9 @@
       <ContentPage class="page">
         <slot />
       </ContentPage>
-      <TableOfContents :page class="toc" />
+      <div class="toc-wrapper">
+        <TableOfContents :page class="toc" />
+      </div>
     </div>
     <Footer />
   </div>
@@ -38,23 +40,45 @@ defineProps({
   padding: 0 2rem;
 }
 
-.toc {
+.toc-wrapper {
   display: none;
-  position: sticky;
+  padding: 4rem 4rem 0 0;
   top: 4rem;
+}
+
+.toc {
+  top: 4rem;
+  position: sticky;
+  display: none;
   height: fit-content;
-  margin-top: 4rem;
-  background: var(--color-primary);
-  color: var(--color-white);
+  overflow-y: auto;
+  max-height: 80vh;
+  color: var(--primary-text-color);
   border-radius: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--nnt-orange) transparent;
+}
+
+.toc::-webkit-scrollbar {
+  width: 6px;
+}
+
+.toc::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.toc::-webkit-scrollbar-thumb {
+  background-color: var(--nnt-orange);
+  border-radius: 3px;
 }
 
 @media (min-width: 768px) {
   .content-wrapper {
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: 1fr 260px;
   }
 
-  .toc {
+  .toc,
+  .toc-wrapper {
     display: block;
   }
 

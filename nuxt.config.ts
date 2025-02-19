@@ -31,5 +31,13 @@ export default defineNuxtConfig({
         dir: './assets/icons'
       },
     ],
-  }
+  },
+
+  content: {
+    markdown: {
+      toc: {
+        depth: 3,
+      }
+    }
+  },
 })
