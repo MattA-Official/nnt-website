@@ -16,3 +16,21 @@ env:
     availability:
       - BUILD
       - RUNTIME
+
+  - variable: FIREBASE_API_KEY
+    secret: FirebaseApiKey
+
+  - variable: FIREBASE_AUTH_DOMAIN
+    secret: FirebaseAuthDomain
+
+  - variable: FIREBASE_PROJECT_ID
+    secret: FirebaseProjectId
+
+  - variable: FIREBASE_STORAGE_BUCKET
+    secret: FirebaseStorageBucket
+
+  - variable: FIREBASE_MESSAGING_SENDER_ID
+    secret: FirebaseMessagingSenderId
+
+  - variable: FIREBASE_APP_ID
+    secret: FirebaseAppId
