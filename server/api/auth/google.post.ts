@@ -24,9 +24,6 @@ export default defineEventHandler(async (event) => {
             })
         }
 
-        // Generate session token using admin SDK
-        const sessionToken = await auth.createCustomToken(decodedToken.uid)
-
         // TODO: Create the user in the database if they don't exist
         const userDoc = await db.collection('users').doc(decodedToken.uid).get()
 
@@ -73,8 +70,7 @@ export default defineEventHandler(async (event) => {
 
         return {
             success: true,
-            user: decodedToken,
-            sessionToken
+            user
         }
     } catch (error: any) {
         throw createError({
