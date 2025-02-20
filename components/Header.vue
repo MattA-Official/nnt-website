@@ -17,6 +17,24 @@
                         </template>
                     </NuxtLink>
                 </li>
+                <li class="user-menu">
+                    <button class="user-button" @click="toggleUserMenu">
+                        <Icon name="icon:arrow" />
+                    </button>
+                    <ul class="dropdown-menu" v-show="isUserMenuOpen">
+                        <template v-if="!currentUser">
+                            <li>
+                                <NuxtLink to="/login">Login</NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink to="/register">Register</NuxtLink>
+                            </li>
+                        </template>
+                        <template v-else>
+                            <li><button @click="logout">Logout</button></li>
+                        </template>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <nav class="narrow">
@@ -46,6 +64,15 @@
                         </template>
                     </NuxtLink>
                 </li>
+                <li class="user-menu">
+                    <template v-if="!currentUser">
+                        <NuxtLink to="/login">Login</NuxtLink>
+                        <NuxtLink to="/register">Register</NuxtLink>
+                    </template>
+                    <template v-else>
+                        <button @click="logout">Logout</button>
+                    </template>
+                </li>
             </ul>
         </nav>
     </header>
@@ -54,6 +81,12 @@
 <script setup>
 const { data } = await useAsyncData('header', () => queryContent('/_nav/header').findOne());
 const isOpen = ref(false);
+const isUserMenuOpen = ref(false);
+const { currentUser, logout } = useAuth();
+
+const toggleUserMenu = () => {
+    isUserMenuOpen.value = !isUserMenuOpen.value;
+};
 </script>
 
 <style scoped>
@@ -132,6 +165,69 @@ a:focus {
 
     .narrow ul.open {
         display: flex;
+    }
+}
+
+/* TODO: make this actually look nice */
+/* This is mostly just for testing */
+
+.user-menu {
+    position: relative;
+    z-index: 5;
+}
+
+.user-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-text-color);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 200%;
+    right: 0;
+    background-color: var(--header-bg-color);
+    border: 1px solid #232323;
+    border-radius: 4px;
+    padding: 0.5rem;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-text-color);
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+    color: var(--link-color);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .user-menu {
+        display: flex;
+        gap: 1rem;
     }
 }
 </style>

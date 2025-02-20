@@ -1,10 +1,10 @@
 <template>
   <div class="login-container">
     <div class="login-box">
-      <h2>Login to New Theatre</h2>
+      <h2>Register for New Theatre</h2>
 
       <Alert type="info">
-        Email and password login coming soon!
+        Account registration coming soon!
       </Alert>
 
       <form class="login-form" @submit.prevent>
@@ -19,20 +19,12 @@
         </div>
 
         <NavButton type="primary" :disabled="true" class="btn">
-          Login
+          Register
         </NavButton>
       </form>
 
-      <div class="divider">
-        <span>or</span>
-      </div>
-
-      <NavButton type="secondary" :disabled="isLoading" @click="handleGoogleLogin" class="btn">
-        Committee? Login with Google SSO
-      </NavButton>
-
       <p class="redirect">
-        Don't have an account? <NuxtLink to="/register">Register here</NuxtLink>
+        Already have an account? <NuxtLink to="/login">Login here</NuxtLink>
       </p>
 
       <Alert v-if="error" type="error">
@@ -43,24 +35,11 @@
 </template>
 
 <script lang="ts" setup>
-const { loginWithGoogle, isLoading, error } = useAuth()
+const { isLoading, error } = useAuth()
 const router = useRouter()
 
-const handleGoogleLogin = async () => {
-  // ignore if already loading
-  if (isLoading.value) return
-
-  try {
-    await loginWithGoogle()
-    // Redirect to dashboard on success
-    router.push('/admin')
-  } catch (err) {
-    // Error is already handled in the composable
-  }
-}
-
 // TODO: replace the form with components based form and strip out ugly styles
-// TODO: implement login with email and password
+// TODO: Implement registration with username and password
 </script>
 
 <style scoped>

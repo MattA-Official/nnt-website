@@ -16,6 +16,11 @@ export const useAuth = () => {
         try {
             // Sign in with Google popup
             const provider = new GoogleAuthProvider()
+
+            // Requested Scopes
+            provider.addScope('profile')
+            provider.addScope('email')
+
             const result = await signInWithPopup(auth, provider)
             const idToken = await result.user.getIdToken()
 
@@ -49,9 +54,8 @@ export const useAuth = () => {
         error.value = ''
 
         try {
-            await $fetch('/api/auth/logout', {
-                method: 'POST'
-            })
+            // Attempt to sign out
+            await signOut(auth)
         } catch (err: any) {
             error.value = err.message || 'Logout failed'
             throw err
