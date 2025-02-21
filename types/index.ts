@@ -49,3 +49,6 @@ export interface UserProfile {
         verifiedAt?: Date
     }
 }
+
+// re-export form types
+export * from './forms'

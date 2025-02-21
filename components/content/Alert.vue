@@ -17,7 +17,7 @@ defineProps({
 <style>
 .alert {
   padding: 1rem;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   border: 2px solid transparent;
   border-radius: 0.5rem;
 }

@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
         if (!decodedToken.email?.endsWith('@newtheatre.org.uk')) {
 
             // delete the user/login method from Firebase Auth
-            const result = await auth.deleteUser(decodedToken.uid).then(() => true).catch((error) => error.toJSON())
+            await auth.deleteUser(decodedToken.uid).then(() => true).catch((error) => error.toJSON())
 
             throw createError({
                 statusCode: 401,

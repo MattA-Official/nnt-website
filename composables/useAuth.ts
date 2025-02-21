@@ -1,17 +1,17 @@
 // composables/useAuth.ts
 import { ref } from 'vue'
 import { useCurrentUser, useFirebaseAuth } from 'vuefire'
-import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
 
 export const useAuth = () => {
     const currentUser = useCurrentUser()
     const isLoading = ref(false)
-    const error = ref('')
+    const error = ref<string | null>(null)
     const auth = useFirebaseAuth()!
 
     const loginWithGoogle = async () => {
         isLoading.value = true
-        error.value = ''
+        error.value = null
 
         try {
             // Sign in with Google popup
@@ -49,9 +49,43 @@ export const useAuth = () => {
         }
     }
 
+    const loginWithEmail = async (email: string, password: string) => {
+        isLoading.value = true
+        error.value = null
+
+        try {
+            // Sign in with email and password
+            const result = await signInWithEmailAndPassword(auth, email, password)
+            const idToken = await result.user.getIdToken()
+
+            // Verify with server and ensure domain restriction
+            const response = await $fetch('/api/auth/email', {
+                method: 'POST',
+                body: { idToken }
+            })
+
+            // If successful, stay signed in
+            return response
+        } catch (err: any) {
+
+            if (err.response?.status === 401) {
+                error.value = 'Unauthorized domain. Only @newtheatre.org.uk emails are allowed.'
+            } else {
+                error.value = err.message || 'Authentication failed'
+            }
+
+            // Make sure user is signed out if the server rejected them
+            await signOut(auth)
+
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     const logout = async () => {
         isLoading.value = true
-        error.value = ''
+        error.value = null
 
         try {
             // Attempt to sign out
@@ -68,6 +102,7 @@ export const useAuth = () => {
         currentUser,
         isLoading,
         error,
+        loginWithEmail,
         loginWithGoogle,
         logout
     }

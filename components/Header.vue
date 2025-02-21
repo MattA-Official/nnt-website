@@ -24,14 +24,15 @@
                     <ul class="dropdown-menu" v-show="isUserMenuOpen">
                         <template v-if="!currentUser">
                             <li>
-                                <NuxtLink to="/login">Login</NuxtLink>
+                                <NuxtLink to="/login" @click="toggleUserMenu">Login</NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink to="/register">Register</NuxtLink>
+                                <NuxtLink to="/register" @click="toggleUserMenu">Register</NuxtLink>
                             </li>
                         </template>
                         <template v-else>
-                            <li><button @click="logout">Logout</button></li>
+                            <!-- TODO: use the button component -->
+                            <li><button @click="handleLogout">Logout</button></li>
                         </template>
                     </ul>
                 </li>
@@ -70,7 +71,8 @@
                         <NuxtLink to="/register">Register</NuxtLink>
                     </template>
                     <template v-else>
-                        <button @click="logout">Logout</button>
+                        <!-- TODO: use the button component -->
+                        <button @click="handleLogout">Logout</button>
                     </template>
                 </li>
             </ul>
@@ -86,6 +88,15 @@ const { currentUser, logout } = useAuth();
 
 const toggleUserMenu = () => {
     isUserMenuOpen.value = !isUserMenuOpen.value;
+};
+
+const handleLogout = () => {
+    logout();
+
+    isUserMenuOpen.value = false;
+
+    // force a reload to update the UI
+    window.location.reload();
 };
 </script>
 

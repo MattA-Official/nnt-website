@@ -3,25 +3,11 @@
     <div class="login-box">
       <h2>Login to New Theatre</h2>
 
-      <Alert type="info">
+      <FormFeedbackHelp>
         Email and password login coming soon!
-      </Alert>
+      </FormFeedbackHelp>
 
-      <form class="login-form" @submit.prevent>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" disabled placeholder="Coming soon..." />
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" disabled placeholder="Coming soon..." />
-        </div>
-
-        <NavButton type="primary" :disabled="true" class="btn">
-          Login
-        </NavButton>
-      </form>
+      <AuthLoginForm />
 
       <div class="divider">
         <span>or</span>
@@ -31,13 +17,14 @@
         Committee? Login with Google SSO
       </NavButton>
 
+      <Alert v-if="error" type="error">
+        {{ error }}
+      </Alert>
+
       <p class="redirect">
         Don't have an account? <NuxtLink to="/register">Register here</NuxtLink>
       </p>
 
-      <Alert v-if="error" type="error">
-        {{ error }}
-      </Alert>
     </div>
   </div>
 </template>
@@ -85,23 +72,6 @@ const handleGoogleLogin = async () => {
 h2 {
   text-align: center;
   margin-bottom: 1.5rem;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--alt-text-color);
-  border-radius: 0.5rem;
 }
 
 .divider {
