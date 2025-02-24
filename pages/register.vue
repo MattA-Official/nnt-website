@@ -3,25 +3,7 @@
     <div class="login-box">
       <h2>Register for New Theatre</h2>
 
-      <Alert type="info">
-        Account registration coming soon!
-      </Alert>
-
-      <form class="login-form" @submit.prevent>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" disabled placeholder="Coming soon..." />
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" disabled placeholder="Coming soon..." />
-        </div>
-
-        <NavButton type="primary" :disabled="true" class="btn">
-          Register
-        </NavButton>
-      </form>
+      <AuthRegisterForm />
 
       <p class="redirect">
         Already have an account? <NuxtLink to="/login">Login here</NuxtLink>

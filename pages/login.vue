@@ -3,10 +3,6 @@
     <div class="login-box">
       <h2>Login to New Theatre</h2>
 
-      <FormFeedbackHelp>
-        Email and password login coming soon!
-      </FormFeedbackHelp>
-
       <AuthLoginForm />
 
       <div class="divider">
