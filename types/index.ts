@@ -51,4 +51,4 @@ export interface UserProfile {
 }
 
 // re-export form types
-export * from './forms'
+export * from './form'

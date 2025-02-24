@@ -58,20 +58,27 @@ export const useAuth = () => {
             const result = await signInWithEmailAndPassword(auth, email, password)
             const idToken = await result.user.getIdToken()
 
-            // Verify with server and ensure domain restriction
-            const response = await $fetch('/api/auth/email', {
-                method: 'POST',
-                body: { idToken }
-            })
+            // Verify with server
+            // const response = await $fetch('/api/auth/login', {
+            //     method: 'POST',
+            //     body: { idToken }
+            // })
 
             // If successful, stay signed in
-            return response
+            // return response
         } catch (err: any) {
-
-            if (err.response?.status === 401) {
-                error.value = 'Unauthorized domain. Only @newtheatre.org.uk emails are allowed.'
-            } else {
-                error.value = err.message || 'Authentication failed'
+            switch (err.code) {
+                case 'auth/invalid-credential':
+                    error.value = 'Invalid email or password';
+                    break;
+                case 'auth/too-many-requests':
+                    error.value = 'Too many login attempts. Please try again later';
+                    break;
+                case 'auth/invalid-email':
+                    error.value = 'Please enter a valid email address';
+                    break;
+                default:
+                    error.value = 'Unable to sign in. Please try again';
             }
 
             // Make sure user is signed out if the server rejected them

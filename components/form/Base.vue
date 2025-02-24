@@ -69,6 +69,29 @@ provide('updateFormField', (name: string, value: any) => {
   formData.value[name] = value
 })
 
+const validateForm = (): boolean => {
+  let isValid = true
+  const validateGroup = (group: FormGroup): boolean => {
+    // Check fields in current group
+    for (const [key, value] of Object.entries(group.fields)) {
+      if (key.endsWith('_valid') && value === false) {
+        isValid = false
+        return false
+      }
+    }
+
+    // Check nested groups
+    for (const nestedGroup of Object.values(group.groups)) {
+      if (!validateGroup(nestedGroup)) {
+        return false
+      }
+    }
+    return true
+  }
+
+  return validateGroup(formStructure.value)
+}
+
 defineProps({
   showActions: {
     type: Boolean,
@@ -115,11 +138,19 @@ const isSubmitting = ref(false)
 const handleSubmit = async (event: Event) => {
   if (isSubmitting.value) return
 
+  // Validate all fields
+  if (!validateForm()) {
+    return
+  }
+
   isSubmitting.value = true
 
   try {
     // Use formData object directly instead of flattening
     const data = flattenFormStructure(formStructure.value)
+
+    // log the data to the console for debugging
+    console.log('Form data:', data)
 
     emit('submit', data)
   } catch (error) {
@@ -132,4 +163,9 @@ const handleSubmit = async (event: Event) => {
 const handleCancel = () => {
   emit('cancel')
 }
+
+// Provide form validation context
+provide('formValidation', {
+  validateForm
+})
 </script>

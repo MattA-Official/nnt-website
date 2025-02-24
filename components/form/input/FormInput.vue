@@ -10,12 +10,13 @@
     </div>
 
     <input :id="id" :name="name" :type="type" :placeholder="placeholder" :required="required" :disabled="disabled"
-      :value="modelValue" @input="onInput" @change="onChange" class="form-input" :class="[varient, color]" />
+      v-model="innerValue" @blur="onBlur" class="form-input" :class="[varient, color, { 'error': hasError }]" />
+    <FormInputError v-if="hasError" :message="errorMessage" />
   </FormLayoutGroup>
 </template>
 
 <script setup lang="ts">
-import type { FormField } from '~/types';
+import type { FormField, ValidationRule } from '~/types';
 
 const props = defineProps({
   modelValue: {
@@ -69,9 +70,9 @@ const props = defineProps({
     default: 'text',
     validator: (value: string) => ['text', 'email', 'password', 'number'].includes(value)
   },
-  pattern: {
-    type: String,
-    default: null
+  rules: {
+    type: Array as PropType<ValidationRule[]>,
+    default: () => []
   }
 })
 
@@ -79,6 +80,56 @@ const emit = defineEmits(['update:modelValue', 'change'])
 
 const groupPath = inject('groupPath', [] as string[])
 const registerFormField = inject('registerFormField') as (field: FormField) => void
+
+const hasError = ref(false)
+const errorMessage = ref('')
+
+const validateField = (value = props.modelValue) => {
+  hasError.value = false
+  errorMessage.value = ''
+
+  for (const rule of props.rules) {
+    if (!rule.validate(value)) {
+      hasError.value = true
+      errorMessage.value = rule.message
+    }
+  }
+  return !hasError.value
+}
+
+const innerValue = ref(props.modelValue)
+
+// Update innerValue when modelValue changes externally
+watch(() => props.modelValue, (newValue) => {
+  innerValue.value = newValue
+})
+
+// Update modelValue when innerValue changes
+watch(innerValue, (newValue) => {
+  emit('update:modelValue', newValue)
+  if (props.name) {
+    registerFormField({
+      name: props.name,
+      value: newValue,
+      groupPath
+    })
+  }
+})
+
+const onBlur = () => {
+  const value = innerValue.value?.toString().trim() // Could this cause issues if people want to use whitespace?
+  innerValue.value = value
+  const isValid = validateField(value)
+
+  if (props.name) {
+    registerFormField({
+      name: props.name,
+      value,
+      groupPath,
+      isValid
+    })
+  }
+}
 
 onMounted(() => {
   if (props.name) {
@@ -100,27 +151,6 @@ watch(() => props.modelValue, (newValue) => {
     })
   }
 })
-
-const onInput = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const value = target.value.trim()
-
-  emit('update:modelValue', value)
-
-  if (props.name) {
-    registerFormField({
-      name: props.name,
-      value,
-      groupPath
-    })
-  }
-}
-
-// Simplify onChange to use onInput
-const onChange = (event: Event) => {
-  onInput(event)
-  emit('change', (event.target as HTMLInputElement).value)
-}
 </script>
 
 <style scoped>
@@ -130,5 +160,9 @@ input {
   border: 1px solid var(--alt-text-color);
   border-radius: 0.5rem;
   margin-bottom: 1rem;
+}
+
+input.error {
+  border-color: var(--danger-color, #dc3545);
 }
 </style>
