@@ -1,7 +1,7 @@
 // composables/useAuth.ts
 import { ref } from 'vue'
 import { useCurrentUser, useFirebaseAuth } from 'vuefire'
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, createUserWithEmailAndPassword } from 'firebase/auth'
 
 export const useAuth = () => {
     const currentUser = useCurrentUser()
@@ -58,7 +58,7 @@ export const useAuth = () => {
             const result = await signInWithEmailAndPassword(auth, email, password)
             const idToken = await result.user.getIdToken()
 
-            // Verify with server
+            // TODO: Verify with server
             // const response = await $fetch('/api/auth/login', {
             //     method: 'POST',
             //     body: { idToken }
@@ -90,6 +90,38 @@ export const useAuth = () => {
         }
     }
 
+    const register = async (email: string, password: string) => {
+        isLoading.value = true
+        error.value = null
+
+        try {
+            const result = await createUserWithEmailAndPassword(auth, email, password)
+            const idToken = await result.user.getIdToken()
+
+            // Verify with server
+            await $fetch('/api/auth/register', {
+                method: 'POST',
+                body: { idToken }
+            })
+
+            return result.user
+        } catch (err: any) {
+            switch (err.code) {
+                case 'auth/email-already-in-use':
+                    error.value = 'This email is already registered';
+                    break;
+                case 'auth/invalid-email':
+                    error.value = 'Please enter a valid email address';
+                    break;
+                default:
+                    error.value = 'Registration failed. Please try again';
+            }
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     const logout = async () => {
         isLoading.value = true
         error.value = null
@@ -111,6 +143,7 @@ export const useAuth = () => {
         error,
         loginWithEmail,
         loginWithGoogle,
-        logout
+        logout,
+        register,
     }
 }
