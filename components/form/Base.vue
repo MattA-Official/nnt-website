@@ -40,6 +40,9 @@ provide('registerFormField', (field: FormField) => {
     }
   }
   target.fields[field.name] = field.value
+  if (field.isValid !== undefined) {
+    target.fields[`${field.name}_valid`] = field.isValid
+  }
   updateFormData()
 })
 
@@ -69,24 +72,24 @@ provide('updateFormField', (name: string, value: any) => {
   formData.value[name] = value
 })
 
-const validateForm = (): boolean => {
-  let isValid = true
-  const validateGroup = (group: FormGroup): boolean => {
-    // Check fields in current group
-    for (const [key, value] of Object.entries(group.fields)) {
-      if (key.endsWith('_valid') && value === false) {
-        isValid = false
-        return false
-      }
-    }
+const getFormData = () => {
+  return flattenFormStructure(formStructure.value)
+}
 
-    // Check nested groups
-    for (const nestedGroup of Object.values(group.groups)) {
-      if (!validateGroup(nestedGroup)) {
-        return false
-      }
-    }
-    return true
+// Provide form data access to child components
+provide('getFormData', getFormData)
+
+const validateForm = (): boolean => {
+  const validateGroup = (group: FormGroup): boolean => {
+    // Check if any field in this group or its subgroups is invalid
+    const fieldsValid = Object.keys(group.fields)
+      .filter(key => key.endsWith('_valid'))
+      .every(key => group.fields[key] === true)
+
+    const subgroupsValid = Object.values(group.groups)
+      .every(subgroup => validateGroup(subgroup))
+
+    return fieldsValid && subgroupsValid
   }
 
   return validateGroup(formStructure.value)
@@ -138,8 +141,9 @@ const isSubmitting = ref(false)
 const handleSubmit = async (event: Event) => {
   if (isSubmitting.value) return
 
-  // Validate all fields
+  // Trigger validation on all fields
   if (!validateForm()) {
+    console.error('Form validation failed')
     return
   }
 

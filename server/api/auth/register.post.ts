@@ -11,16 +11,12 @@ export default defineEventHandler(async (event) => {
         // Verify the Firebase token directly
         const decodedToken = await auth.verifyIdToken(idToken)
 
-        // Check if email ends with @newtheatre.org.uk
-        if (!decodedToken.email?.endsWith('@newtheatre.org.uk')) {
-
-            // delete the user/login method from Firebase Auth
-            await auth.deleteUser(decodedToken.uid).then(() => true).catch((error) => error.toJSON())
-
+        // Check the email exists
+        if (!decodedToken.email) {
             throw createError({
                 statusCode: 401,
-                statusMessage: 'Unauthorized domain. Only @newtheatre.org.uk emails are allowed.',
-                message: 'Unauthorized domain. Only @newtheatre.org.uk emails are allowed.'
+                statusMessage: 'Unauthorized',
+                message: 'Email not provided'
             })
         }
 
@@ -35,18 +31,16 @@ export default defineEventHandler(async (event) => {
                 username: username,
                 displayName: decodedToken.name || decodedToken.email.split('@')[0],
                 email: decodedToken.email,
-                status: 'committee',
+                status: 'unknown',
                 gradYear: null,
                 roles: {
                     admin: false,
                     manager: false,
                     trainer: false,
-                    committee: {
-                        role: 'unknown',
-                    }
+                    committee: false
                 },
                 profile: {
-                    photoURL: decodedToken.picture || null,
+                    photoURL: null,
                     bio: null,
                     contactNumber: null,
                     preferences: {

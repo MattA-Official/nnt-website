@@ -10,7 +10,7 @@
       <FormLayoutGroup>
         <FormInputLabel for="password" required>Password</FormInputLabel>
         <FormInput id="password" name="password" type="password" placeholder="Enter your password" required
-          :rules="[required, minLength(8)]" />
+          :rules="[required, minLength(8)]" autocomplete="current-password" />
       </FormLayoutGroup>
     </FormLayoutGroup>
   </FormBase>

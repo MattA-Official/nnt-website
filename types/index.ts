@@ -17,8 +17,9 @@ export interface CommitteeInfo {
 
 export interface UserRoles {
     admin: boolean
+    manager: boolean
     trainer: boolean
-    committee?: CommitteeInfo
+    committee: CommitteeInfo | false
 }
 
 export interface UserProfile {

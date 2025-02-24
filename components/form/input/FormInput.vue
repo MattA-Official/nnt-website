@@ -80,6 +80,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
 
 const groupPath = inject('groupPath', [] as string[])
 const registerFormField = inject('registerFormField') as (field: FormField) => void
+const getFormData = inject('getFormData') as () => { [key: string]: any }
 
 const hasError = ref(false)
 const errorMessage = ref('')
@@ -88,13 +89,16 @@ const validateField = (value = props.modelValue) => {
   hasError.value = false
   errorMessage.value = ''
 
+  const formData = getFormData?.()
+
   for (const rule of props.rules) {
-    if (!rule.validate(value)) {
+    if (!rule.validate(value, formData)) {
       hasError.value = true
       errorMessage.value = rule.message
+      return false
     }
   }
-  return !hasError.value
+  return true
 }
 
 const innerValue = ref(props.modelValue)

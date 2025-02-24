@@ -12,7 +12,7 @@ export interface FormGroup {
 }
 
 export type ValidationRule = {
-    validate: (value: any) => boolean;
+    validate: (value: any, formData?: { [key: string]: any }) => boolean;
     message: string;
 }
 
@@ -48,6 +48,10 @@ export const pattern = (regex: RegExp, message: string): ValidationRule => ({
 })
 
 export const match = (fieldName: string): ValidationRule => ({
-    validate: (value: string, formData?: any) => !value || value === formData?.[fieldName],
-    message: `Must match ${fieldName}`
+    validate: (value: string, formData?: { [key: string]: any }) => {
+        if (!formData) return true; // Skip validation if no form data available
+        const targetValue = fieldName.split('.').reduce((obj, key) => obj?.[key], formData);
+        return typeof targetValue === 'string' && value === targetValue;
+    },
+    message: 'Fields must match'
 })
