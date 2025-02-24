@@ -3,7 +3,11 @@
     <div class="login-box">
       <h2>Register for New Theatre</h2>
 
-      <AuthRegisterForm />
+      <Alert type="info">
+        Registration is currently closed. Please check back later.
+      </Alert>
+
+      <!-- <AuthRegisterForm /> -->
 
       <p class="redirect">
         Already have an account? <NuxtLink to="/login">Login here</NuxtLink>
