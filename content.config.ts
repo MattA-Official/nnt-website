@@ -10,29 +10,8 @@ export default defineContentConfig({
             },
             type: 'page',
         }),
-        navigation: defineCollection({
-            source: 'navigation/**.yml',
-            type: 'data',
-            schema: z.object({
-                links: z.array(z.object({
-                    text: z.string(),
-                    url: z.string(),
-                    button: z.boolean().optional(),
-                    type: z.string().optional(),
-                })),
-                socials: z.array(z.object({
-                    icon: z.string(),
-                    url: z.string()
-                })).optional(),
-                legal: z.object({
-                    copyright: z.string(),
-                    privacy: z.string().optional(),
-                    terms: z.string().optional(),
-                }).optional(),
-            })
-        }),
         committee: defineCollection({
-            source: 'data/committee.yml',
+            source: '_data/committee.yml',
             type: 'data',
             schema: z.object({
                 committee: z.array(z.object({

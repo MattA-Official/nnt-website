@@ -1,13 +1,15 @@
 <template>
   <div class="committee-list">
     <div class="grid">
-      <!-- <CommitteeCard v-for="member in data.committee" :key="member.id" :member="member" v-show="member.name" /> -->
+      <CommitteeCard v-for="member in committee?.committee" :key="member.name" :member="member" v-show="member.name" />
     </div>
   </div>
 </template>
 
-<script setup>
-// FIXME: const { data } = await useAsyncData('committee', () => queryContent('/_data/committee').findOne());
+<script setup lang="ts">
+const { data: committee } = useAsyncData('committee', () => {
+  return queryCollection('committee').first()
+})
 </script>
 
 <style scoped>
