@@ -1,23 +1,23 @@
 <template>
   <div>
     <Header />
-    <Hero :img="page.hero.img" v-if="page?.hero">
+    <Hero :img="pageData?.meta?.hero?.img" v-if="pageData?.meta?.hero">
       <template #default>
-        <h1>{{ page.hero.title }}</h1>
+        <h1>{{ pageData.meta.hero.title }}</h1>
       </template>
       <template #subtitle>
-        <p>{{ page.hero.subtitle }}</p>
+        <p>{{ pageData.meta.hero.subtitle }}</p>
       </template>
     </Hero>
-    <Banner :img="page.banner.img" v-if="page?.banner">
-      <h1>{{ page.banner.text }}</h1>
+    <Banner :img="pageData.meta.banner.img" v-if="pageData?.meta?.banner">
+      <h1>{{ pageData.meta.banner.text }}</h1>
     </Banner>
     <div class="content-wrapper">
       <ContentPage class="page">
         <slot />
       </ContentPage>
       <div class="toc-wrapper">
-        <TableOfContents :page class="toc" />
+        <TableOfContents :links="tocLinks" class="toc" />
       </div>
     </div>
     <Footer />
@@ -25,9 +25,7 @@
 </template>
 
 <script setup>
-defineProps({
-  page: Object
-})
+const { pageData, tocLinks } = usePageData()
 </script>
 
 <style scoped>

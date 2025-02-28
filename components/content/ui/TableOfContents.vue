@@ -1,6 +1,6 @@
 <template>
   <div class="table-of-contents">
-    <TableOfContentsItem :links="page.body.toc.links" :activeId="activeId" />
+    <TableOfContentsItem :links :activeId="activeId" />
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 
 const props = defineProps({
-  page: Object
+  links: Array
 })
 
 const activeId = ref('')
