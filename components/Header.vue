@@ -81,7 +81,34 @@
 </template>
 
 <script setup>
-const { data } = await useAsyncData('header', () => queryContent('/_nav/header').findOne());
+const data = {
+    links: [
+        {
+            text: "About",
+            url: "/about"
+        },
+        {
+            text: "Alumni",
+            url: "/alumni"
+        },
+        {
+            text: "Technical",
+            url: "/technical"
+        },
+        {
+            text: "Get Involved",
+            url: "/get-involved",
+            button: true,
+            type: "primary"
+        },
+        {
+            text: "What's On",
+            url: "/whats-on",
+            button: true,
+            type: "secondary"
+        }
+    ]
+}
 const isOpen = ref(false);
 const isUserMenuOpen = ref(false);
 const { currentUser, logout } = useAuth();

@@ -36,7 +36,51 @@
 </template>
 
 <script setup>
-const { data } = await useAsyncData('footer', () => queryContent('/_nav/footer').findOne())
+const data = {
+    socials: [
+        {
+            icon: 'email',
+            url: 'mailto:boxoffice@newtheatre.org.uk'
+        },
+        {
+            icon: 'facebook',
+            url: 'https://www.facebook.com/thenottinghamnewtheatre/'
+        },
+        {
+            icon: 'instagram',
+            url: 'https://www.instagram.com/nottinghamnewtheatre/'
+        },
+        {
+            icon: 'su',
+            url: 'https://su.nottingham.ac.uk/activities/view/new-theatre'
+        }
+    ],
+    links: [
+        {
+            text: 'Wiki & Resources',
+            url: '/wiki'
+        },
+        {
+            text: 'Branding',
+            url: '/branding'
+        },
+        {
+            text: 'Mailing List',
+            url: '/mailing-list'
+        },
+        {
+            text: 'History',
+            url: 'http://history.newtheatre.org.uk/'
+        },
+        {
+            text: 'Photo Gallery',
+            url: 'http://photos.newtheatre.org.uk/'
+        }
+    ],
+    legal: {
+        copyright: 'Nottingham New Theatre, 2024'
+    }
+}
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <ContentSlot :use="$slots.default" />
+        <slot :use="$slots.default" />
     </div>
 </template>
 

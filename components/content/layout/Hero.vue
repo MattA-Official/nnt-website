@@ -4,10 +4,10 @@
         <div class="overlay"></div>
         <div class="hero-content">
             <h1>
-                <ContentSlot :use="$slots.default" unwrap="h1" />
+                <slot :use="$slots.default" mdc-unwrap="h1" />
             </h1>
             <p>
-                <ContentSlot :use="$slots.subtitle" unwrap="h1" />
+                <slot :use="$slots.subtitle" mdc-unwrap="h1" />
             </p>
         </div>
     </section>

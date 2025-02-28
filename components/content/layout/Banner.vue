@@ -4,7 +4,7 @@
         <div class="overlay"></div>
         <div class="banner-content">
             <h1>
-                <ContentSlot :use="$slots.default" unwrap="h1" />
+                <slot :use="$slots.default" mdc-unwrap="h1" />
             </h1>
         </div>
     </section>

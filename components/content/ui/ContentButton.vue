@@ -1,7 +1,7 @@
 <template>
   <NuxtLink :to="url">
     <button :class="type" :disabled>
-      <ContentSlot :use="$slots.default" unwrap="p" />
+      <slot :use="$slots.default" unwrap="p" />
       <Icon :name="link" v-if="external" />
     </button>
   </NuxtLink>

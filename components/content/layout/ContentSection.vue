@@ -1,6 +1,6 @@
 <template>
     <section :class="type">
-        <ContentSlot :use="$slots.default" />
+        <slot :use="$slots.default" />
     </section>
 </template>
 
