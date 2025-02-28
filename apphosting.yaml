@@ -17,6 +17,8 @@ env:
 
   - variable: GOOGLE_APPLICATION_CREDENTIALS
     secret: FirebaseServiceAccountKey
+    availability:
+      - BUILD
 
   - variable: FIREBASE_API_KEY
     secret: FirebaseApiKey
