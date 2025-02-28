@@ -13,7 +13,7 @@
         Committee? Login with Google SSO
       </NavButton>
 
-      <Alert v-if="error" type="error">
+      <Alert v-if="error" type="error" class="login-error">
         {{ error }}
       </Alert>
 
@@ -109,5 +109,9 @@ h2 {
 .redirect {
   text-align: center;
   margin-top: 1.5rem;
+}
+
+.login-error {
+  margin-top: 1rem;
 }
 </style>
