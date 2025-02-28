@@ -1,13 +1,11 @@
 # Settings for Backend (on Cloud Run).
 # See https://firebase.google.com/docs/app-hosting/configure#cloud-run
 runConfig:
-  minInstances: 1
+  minInstances: 0
   maxInstances: 10
   concurrency: 40
   cpu: 2
   memoryMiB: 1024
-  # Increased startup timeout for Nuxt's cold starts
-  startupTimeout: 300s
 
 # Environment configuration
 env:
@@ -16,6 +14,9 @@ env:
     availability:
       - BUILD
       - RUNTIME
+
+  - variable: GOOGLE_APPLICATION_CREDENTIALS
+    secret: FirebaseServiceAccountKey
 
   - variable: FIREBASE_API_KEY
     secret: FirebaseApiKey
