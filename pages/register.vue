@@ -7,7 +7,7 @@
         Registration is currently closed. Please check back later.
       </Alert>
 
-      <AuthRegisterForm />
+      <!-- <AuthRegisterForm /> -->
 
       <p class="redirect">
         Already have an account? <NuxtLink to="/login">Login here</NuxtLink>
