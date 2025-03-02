@@ -2,12 +2,15 @@
 import { ref } from 'vue'
 import { useCurrentUser, useFirebaseAuth } from 'vuefire'
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, createUserWithEmailAndPassword } from 'firebase/auth'
+import type { UserProfile } from '~/types'
 
 export const useAuth = () => {
     const currentUser = useCurrentUser()
+    const userProfile = ref<UserProfile | null>(null)
     const isLoading = ref(false)
     const error = ref<string | null>(null)
     const auth = useFirebaseAuth()!
+    const requiresSetup = ref(false)
 
     const loginWithGoogle = async () => {
         isLoading.value = true
@@ -58,7 +61,7 @@ export const useAuth = () => {
             const result = await signInWithEmailAndPassword(auth, email, password)
             const idToken = await result.user.getIdToken()
 
-            // TODO: Verify with server
+            // TODO: Get user profile from server
             // const response = await $fetch('/api/auth/login', {
             //     method: 'POST',
             //     body: { idToken }
@@ -98,13 +101,19 @@ export const useAuth = () => {
             const result = await createUserWithEmailAndPassword(auth, email, password)
             const idToken = await result.user.getIdToken()
 
-            // Verify with server
-            await $fetch('/api/auth/register', {
+            // Create user profile on server
+            const response = await $fetch<{ success: boolean, user: UserProfile, requiresSetup: boolean }>('/api/auth/register', {
                 method: 'POST',
                 body: { idToken }
             })
 
-            return result.user
+            userProfile.value = response.user
+            requiresSetup.value = response.requiresSetup
+
+            return {
+                user: response.user,
+                requiresSetup: response.requiresSetup
+            }
         } catch (err: any) {
             switch (err.code) {
                 case 'auth/email-already-in-use':
@@ -137,13 +146,68 @@ export const useAuth = () => {
         }
     }
 
+    const getProfile = async () => {
+        if (!currentUser.value) return null
+
+        isLoading.value = true
+        error.value = null
+
+        try {
+            const idToken = await currentUser.value.getIdToken()
+            const response = await $fetch<{ success: boolean, user: UserProfile }>('/api/auth/user', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${idToken}`
+                }
+            })
+
+            userProfile.value = response.user
+            return response.user
+        } catch (err: any) {
+            error.value = 'Failed to load profile'
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    const updateProfile = async (profileData: Partial<UserProfile>) => {
+        if (!currentUser.value) return null
+
+        isLoading.value = true
+        error.value = null
+
+        try {
+            const idToken = await currentUser.value.getIdToken()
+            const response = await $fetch<{ success: boolean, user: UserProfile }>('/api/auth/profile', {
+                method: 'PUT',
+                body: {
+                    idToken,
+                    profileData
+                }
+            })
+
+            userProfile.value = response.user
+            return response.user
+        } catch (err: any) {
+            error.value = 'Failed to update profile'
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     return {
         currentUser,
+        userProfile,
         isLoading,
         error,
+        requiresSetup,
         loginWithEmail,
         loginWithGoogle,
         logout,
         register,
+        getProfile,
+        updateProfile
     }
 }

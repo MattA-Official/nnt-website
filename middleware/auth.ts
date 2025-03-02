@@ -1,8 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to) => {
     const user = await getCurrentUser()
 
-    console.log('User:', user) // DEBUG
-
     // If user is logged in and trying to access auth pages, redirect to home
     if (user && (to.path === '/login' || to.path === '/register')) {
         return navigateTo('/')

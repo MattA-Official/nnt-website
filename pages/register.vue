@@ -7,7 +7,7 @@
         Registration is currently closed. Please check back later.
       </Alert>
 
-      <!-- <AuthRegisterForm /> -->
+      <AuthRegisterForm />
 
       <p class="redirect">
         Already have an account? <NuxtLink to="/login">Login here</NuxtLink>
@@ -23,9 +23,6 @@
 <script lang="ts" setup>
 const { isLoading, error } = useAuth()
 const router = useRouter()
-
-// TODO: replace the form with components based form and strip out ugly styles
-// TODO: Implement registration with username and password
 </script>
 
 <style scoped>
@@ -35,7 +32,6 @@ const router = useRouter()
   align-items: center;
   min-height: 50vh;
   padding: 1.5rem;
-  background-color: var(--nnt-light);
 }
 
 .login-box {
@@ -43,7 +39,6 @@ const router = useRouter()
   max-width: 400px;
   padding: 1.5rem;
   border-radius: 8px;
-  background-color: var(--nnt-white);
   border: 1px solid var(--nnt-orange);
 }
 

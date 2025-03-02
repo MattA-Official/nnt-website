@@ -37,8 +37,13 @@ const handleSubmit = async (data: { email: string; password: string; confirmPass
   if (!data.email || !data.password) return
 
   try {
-    await register(data.email, data.password)
-    await router.push('/') // TODO: Redirect to profile setup
+    const result = await register(data.email, data.password)
+
+    if (result?.requiresSetup) {
+      await router.push('/account/setup')
+    } else {
+      await router.push(props.redirect || '/')
+    }
   } catch (error) {
     // Error handled by composable
   }

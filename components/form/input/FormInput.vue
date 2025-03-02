@@ -68,7 +68,7 @@ const props = defineProps({
   type: {
     type: String,
     default: 'text',
-    validator: (value: string) => ['text', 'email', 'password', 'number'].includes(value)
+    validator: (value: string) => ['text', 'email', 'password', 'number', 'tel'].includes(value)
   },
   rules: {
     type: Array as PropType<ValidationRule[]>,

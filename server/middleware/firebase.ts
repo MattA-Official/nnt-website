@@ -1,6 +1,7 @@
 import { getApps, initializeApp as initializeApp, cert, type App } from 'firebase-admin/app'
 import { Auth, getAuth } from 'firebase-admin/auth'
 import { getFirestore, Firestore } from 'firebase-admin/firestore'
+import { getStorage, Storage } from 'firebase-admin/storage'
 import { UserProfile } from '~/types'
 
 // Extend H3 EventContext
@@ -9,6 +10,7 @@ declare module 'h3' {
         db: Firestore
         auth: Auth
         user: UserProfile | null
+        storage: Storage
     }
 }
 
@@ -22,6 +24,7 @@ export default defineEventHandler(async (event) => {
 
             event.context.auth = getAuth(app)
             event.context.db = getFirestore(app)
+            event.context.storage = getStorage(app)
 
             console.log('Firebase Admin initialized successfully')
         } catch (error) {
@@ -34,6 +37,7 @@ export default defineEventHandler(async (event) => {
     } else if (app) {
         event.context.auth = getAuth(app)
         event.context.db = getFirestore(app)
+        event.context.storage = getStorage(app)
     }
 
     // Handle user authentication

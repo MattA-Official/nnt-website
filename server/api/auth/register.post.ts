@@ -13,6 +13,9 @@ export default defineEventHandler(async (event) => {
 
         // Check the email exists
         if (!decodedToken.email) {
+            // delete the user/login method from Firebase Auth
+            await auth.deleteUser(decodedToken.uid).then(() => true).catch((error) => error.toJSON())
+
             throw createError({
                 statusCode: 401,
                 statusMessage: 'Unauthorized',
@@ -20,13 +23,14 @@ export default defineEventHandler(async (event) => {
             })
         }
 
-        // TODO: Create the user in the database if they don't exist
+        // Check if the user already exists in the database
         const userDoc = await db.collection('users').doc(decodedToken.uid).get()
+        let user: UserProfile
 
         if (!userDoc.exists) {
             const username = await generateUniqueSlug(db, decodedToken.name || decodedToken.email.split('@')[0])
 
-            const user: UserProfile = {
+            user = {
                 uid: decodedToken.uid,
                 username: username,
                 displayName: decodedToken.name || decodedToken.email.split('@')[0],
@@ -56,21 +60,21 @@ export default defineEventHandler(async (event) => {
                 }
             }
 
-
             await db.collection('users').doc(decodedToken.uid).set(user)
+        } else {
+            // User exists, convert timestamps
+            user = convertTimestamps(userDoc.data() as UserProfile)
         }
-
-        // Return the user and session token
-        const user: UserProfile = convertTimestamps(userDoc.data() as UserProfile)
 
         return {
             success: true,
-            user
+            user,
+            requiresSetup: !userDoc.exists
         }
     } catch (error: any) {
         throw createError({
-            statusCode: 401,
-            statusMessage: error.statusMessage || 'Unauthorized',
+            statusCode: error.statusCode || 500,
+            statusMessage: error.statusMessage || 'Server Error',
             message: error.message || 'Authentication failed'
         })
     }
