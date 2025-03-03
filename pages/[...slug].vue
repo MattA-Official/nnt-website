@@ -3,13 +3,6 @@
     <div v-if="page">
       <ContentRenderer :value="page" />
     </div>
-    <div v-else id="error">
-      <h1>404 - Page Not Found</h1>
-      <p>The page you are looking for does not exist.</p>
-      <NuxtLink to="/">
-        <NavButton>Go back home</NavButton>
-      </NuxtLink>
-    </div>
   </main>
 </template>
 
@@ -23,24 +16,11 @@ const { data: page } = await useAsyncData(
   { watch: [route] }
 )
 
-// The layout management and page data are now handled by usePageData in app.vue
+// if page doesn't exist, return 404
+if (!page.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'In amongst the props, lights and wires, we couldn’t find that page for you.',
+  })
+}
 </script>
-
-<style scoped>
-#error {
-  max-width: var(--page-max-width);
-  min-height: 55vh;
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#error a {
-  padding-top: 1rem;
-  text-decoration: none;
-}
-</style>
