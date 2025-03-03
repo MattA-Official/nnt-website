@@ -1,33 +1,53 @@
-import { useAuth } from './useAuth'
 import type { UserProfile } from '~/types'
 
-export const useAuthGuard = () => {
-    const { currentUser, userProfile, getProfile, isLoading } = useAuth()
+export const useAuthGuard = async () => {
+    const currentUser = await getCurrentUser()
+    const userProfile = ref<UserProfile | null>(null)
 
-    const requireAuth = async (redirectPath = '/login') => {
+    const getProfile = async () => {
+        if (!currentUser) return
+
+        try {
+            const idToken = await currentUser.getIdToken()
+            const response = await $fetch<{ success: boolean, user: UserProfile }>('/api/auth/user', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${idToken}`
+                }
+            })
+
+            userProfile.value = response.user
+            return response.user
+        } catch (err: any) {
+            throw err
+        }
+    }
+
+    const requireAuth = async (redirectPath = '/') => {
         // Check if user is authenticated
         if (!currentUser.value) {
             return navigateTo({
-                path: redirectPath,
-                query: { redirect: encodeURIComponent(useRoute().fullPath) },
+                path: '/login',
+                query: { redirect: redirectPath },
             })
         }
 
         return true
     }
 
-    const requireGuest = async (redirectPath = '/') => {
-        // If user is authenticated, redirect to specified path
+    const requireGuest = async () => {
+        // If user is authenticated, redirect to home
         if (currentUser.value) {
-            return navigateTo(redirectPath)
+            return navigateTo('/')
         }
 
         return true
     }
 
-    const requireAdmin = async () => {
+    const requireAdmin = async (redirectPath = '/') => {
         // First ensure user is authenticated
-        const authCheck = await requireAuth()
+        const authCheck = await requireAuth(redirectPath)
+
         if (authCheck !== true) return authCheck
 
         // Load profile if not available
@@ -36,7 +56,11 @@ export const useAuthGuard = () => {
                 await getProfile()
             } catch (error) {
                 console.error('Failed to load user profile:', error)
-                return navigateTo('/login')
+
+                return navigateTo({
+                    path: '/login',
+                    query: { redirect: redirectPath },
+                })
             }
         }
 
@@ -76,6 +100,5 @@ export const useAuthGuard = () => {
         requireGuest,
         requireAdmin,
         requireRole,
-        isLoading,
     }
 }

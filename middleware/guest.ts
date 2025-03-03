@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware(async () => {
-    const { requireGuest } = useAuthGuard()
+    const { requireGuest } = await useAuthGuard()
 
     return await requireGuest()
 })
