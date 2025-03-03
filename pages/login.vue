@@ -42,8 +42,9 @@ const handleGoogleLogin = async () => {
   }
 }
 
-// TODO: replace the form with components based form and strip out ugly styles
-// TODO: implement login with email and password
+definePageMeta({
+  middleware: 'guest'
+})
 </script>
 
 <style scoped>

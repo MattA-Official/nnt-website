@@ -23,6 +23,10 @@
 <script lang="ts" setup>
 const { isLoading, error } = useAuth()
 const router = useRouter()
+
+definePageMeta({
+  middleware: 'guest'
+})
 </script>
 
 <style scoped>
