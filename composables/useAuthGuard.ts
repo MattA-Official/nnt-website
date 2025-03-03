@@ -25,7 +25,7 @@ export const useAuthGuard = async () => {
 
     const requireAuth = async (redirectPath = '/') => {
         // Check if user is authenticated
-        if (!currentUser.value) {
+        if (!currentUser) {
             return navigateTo({
                 path: '/login',
                 query: { redirect: redirectPath },
@@ -37,7 +37,7 @@ export const useAuthGuard = async () => {
 
     const requireGuest = async () => {
         // If user is authenticated, redirect to home
-        if (currentUser.value) {
+        if (currentUser) {
             return navigateTo('/')
         }
 
