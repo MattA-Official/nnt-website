@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '/**': { prerender: true },
     '/api/**': { prerender: false },
     '/admin/**': { prerender: false },
+    '/account/**': { prerender: false },
     // TODO: figure out which routes need to be excluded from prerendering
     '/mailing-list': { redirect: 'https://newtheatre.us3.list-manage.com/subscribe?u=ce5311ce46fe45638f90f4022&id=97e4899eb8' },
   },
