@@ -1,37 +1,50 @@
 <template>
-  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Login" :error="error ?? undefined">
+  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Login" :error="error ?? undefined"
+    :validators="formValidators" :initialValues="initialValues">
     <FormLayoutGroup type="column">
       <FormLayoutGroup>
         <FormInputLabel for="email" required>Email</FormInputLabel>
-        <FormInput id="email" name="email" type="email" placeholder="Enter your email" required
-          :rules="[required, email]" />
+        <FormInput id="email" name="email" type="email" placeholder="Enter your email" required />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
         <FormInputLabel for="password" required>Password</FormInputLabel>
         <FormInput id="password" name="password" type="password" placeholder="Enter your password" required
-          :rules="[required, minLength(8)]" autocomplete="current-password" />
+          autocomplete="current-password" />
       </FormLayoutGroup>
     </FormLayoutGroup>
   </FormBase>
 </template>
 
 <script setup lang="ts">
-import { required, email, minLength } from '~/types/form'
+import { validators } from '~/types/form'
 
 const props = defineProps<{
   redirect?: string
 }>()
 
 const { loginWithEmail, isLoading, error } = useAuth()
-const router = useRouter()
+
+// Define form validators
+const formValidators = {
+  email: [
+    validators.required(),
+    validators.email()
+  ],
+  password: [
+    validators.required("Password is required")
+  ]
+}
+
+const initialValues = {
+  email: '',
+  password: ''
+}
 
 const handleSubmit = async (data: { email: string; password: string }) => {
-  if (!data.email || !data.password) return
-
   try {
     await loginWithEmail(data.email, data.password)
-    await router.push(props.redirect || '/admin') // TODO: Only redirect to admin if user is admin
+    await navigateTo(props.redirect || '/')
   } catch (error) {
     // Error handled by composable
   }

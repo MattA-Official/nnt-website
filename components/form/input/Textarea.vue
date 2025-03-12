@@ -11,13 +11,15 @@
 
         <textarea :id="id" :name="name" :placeholder="placeholder" :required="required" :disabled="disabled"
             :rows="rows" v-model="innerValue" @blur="onBlur" class="form-textarea"
-            :class="[varient, color, { 'error': hasError }]"></textarea>
-        <FormInputError v-if="hasError" :message="errorMessage" />
+            :class="[varient, color, { 'error': formContext && formContext.errors[name] }]"></textarea>
+
+        <FormInputError v-if="formContext && formContext.errors[name]"
+            :message="formContext.errors[name] ?? undefined" />
     </FormLayoutGroup>
 </template>
 
 <script setup lang="ts">
-import type { FormField, ValidationRule } from '~/types';
+import type { FormField, FormContext } from '~/types';
 
 const props = defineProps({
     modelValue: {
@@ -65,41 +67,14 @@ const props = defineProps({
         type: String,
         default: 'primary',
         validator: (value: string) => ['primary', 'secondary', 'success', 'danger', 'warning', 'info'].includes(value)
-    },
-    error: {
-        type: String,
-        default: null
-    },
-    rules: {
-        type: Array as PropType<ValidationRule[]>,
-        default: () => []
     }
 })
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-const groupPath = inject('groupPath', [] as string[])
-const registerFormField = inject('registerFormField') as (field: FormField) => void
-const getFormData = inject('getFormData') as () => { [key: string]: any }
-
-const hasError = ref(false)
-const errorMessage = ref('')
-
-const validateField = (value = props.modelValue) => {
-    hasError.value = false
-    errorMessage.value = ''
-
-    const formData = getFormData?.()
-
-    for (const rule of props.rules) {
-        if (!rule.validate(value, formData)) {
-            hasError.value = true
-            errorMessage.value = rule.message
-            return false
-        }
-    }
-    return true
-}
+// Form system integration with proper typing
+const formContext = inject<FormContext | null>('form', null)
+const registerFormField = inject<((field: { name: string, value: any }) => void) | null>('registerFormField', null)
 
 const innerValue = ref(props.modelValue)
 
@@ -111,49 +86,47 @@ watch(() => props.modelValue, (newValue) => {
 // Update modelValue when innerValue changes
 watch(innerValue, (newValue) => {
     emit('update:modelValue', newValue)
-    if (props.name) {
-        registerFormField({
-            name: props.name,
-            value: newValue,
-            groupPath
-        })
+
+    // Update form state
+    if (props.name && formContext) {
+        formContext.setValue(props.name, newValue)
     }
 })
 
 const onBlur = () => {
     const value = innerValue.value?.toString().trim()
-    const isValid = validateField(value)
+    innerValue.value = value
 
-    if (props.name) {
-        registerFormField({
-            name: props.name,
-            value,
-            groupPath,
-            isValid
-        })
+    if (formContext && props.name) {
+        formContext.setTouched(props.name)
     }
 }
 
 onMounted(() => {
     if (props.name) {
-        registerFormField({
-            name: props.name,
-            value: props.modelValue,
-            groupPath
-        })
+        // Register with form system if needed
+        if (registerFormField) {
+            registerFormField({
+                name: props.name,
+                value: props.modelValue
+            })
+        }
+
+        // Get the value from form context if available
+        if (formContext && formContext.values && props.name in formContext.values) {
+            innerValue.value = formContext.values[props.name]
+        }
     }
 })
 
-// Watch for modelValue changes
-watch(() => props.modelValue, (newValue) => {
-    if (props.name) {
-        registerFormField({
-            name: props.name,
-            value: newValue,
-            groupPath
-        })
-    }
-})
+// Add a watcher to listen for form context value changes
+if (props.name && formContext) {
+    watch(() => formContext.values[props.name], (newVal) => {
+        if (newVal !== undefined && newVal !== innerValue.value) {
+            innerValue.value = newVal
+        }
+    })
+}
 </script>
 
 <style scoped>

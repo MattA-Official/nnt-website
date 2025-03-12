@@ -1,51 +1,48 @@
 <template>
-  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Complete Setup" :error="error || undefined">
+  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Complete Setup" :error="error || undefined"
+    :validators="formValidators" :initialValues="initialValues">
     <FormLayoutGroup type="column">
       <FormLayoutGroup>
         <FormInputLabel for="photoUpload">Profile Picture</FormInputLabel>
-        <FormInputImageUpload id="photoUpload" name="photoURL" v-model="formData.photoURL" />
+        <FormInputImageUpload id="photoUpload" name="photoURL" />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
         <FormInputLabel for="displayName" required>Display Name</FormInputLabel>
-        <FormInput id="displayName" name="displayName" type="text" placeholder="Your name as shown publicly" required
-          :rules="[required]" v-model="formData.displayName" />
+        <FormInput id="displayName" name="displayName" type="text" placeholder="Your name as shown publicly" required />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
         <FormInputLabel for="username" required>Username</FormInputLabel>
-        <FormInput id="username" name="username" type="text" placeholder="Your unique username" required
-          :rules="[required]" v-model="formData.username" />
+        <FormInput id="username" name="username" type="text" placeholder="Your unique username" required />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
         <FormInputLabel for="status">Status</FormInputLabel>
-        <FormInputSelect id="status" name="status" :options="statusOptions" v-model="formData.status"
-          @update:modelValue="handleStatusChange" />
+        <FormInputSelect id="status" name="status" :options="statusOptions" @update:modelValue="handleStatusChange" />
       </FormLayoutGroup>
 
       <FormLayoutGroup v-if="showGradYear">
         <FormInputLabel for="gradYear">Graduation Year</FormInputLabel>
-        <FormInputSelect id="gradYear" name="gradYear" :options="gradYearOptions" v-model="formData.gradYear" />
+        <FormInputSelect id="gradYear" name="gradYear" :options="gradYearOptions" />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
         <FormInputLabel for="bio">Bio</FormInputLabel>
-        <FormInputTextarea id="bio" name="bio" placeholder="Tell us about yourself" v-model="formData.bio" />
+        <FormInputTextarea id="bio" name="bio" placeholder="Tell us about yourself" />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
         <FormInputLabel for="contactNumber">Contact Number</FormInputLabel>
-        <FormInput id="contactNumber" name="contactNumber" type="tel" placeholder="Your phone number"
-          v-model="formData.contactNumber" />
+        <FormInput id="contactNumber" name="contactNumber" type="tel" placeholder="Your phone number" />
       </FormLayoutGroup>
     </FormLayoutGroup>
   </FormBase>
 </template>
 
 <script lang="ts" setup>
-import type { UserProfile } from '~/types'
-import { required } from '~/types/form'
+import type { FormContext, UserProfile } from '~/types'
+import { validators } from '~/types/form'
 
 const props = defineProps({
   initialData: {
@@ -78,8 +75,19 @@ const statusOptions = [
 const { updateProfile, isLoading, error } = useAuth()
 const router = useRouter()
 
-// Create reactive form data object initialized with the props
-const formData = reactive({
+// Set up form validators
+const formValidators = {
+  displayName: [validators.required('Display name is required')],
+  username: [validators.required('Username is required')],
+  status: [],
+  gradYear: [],
+  bio: [],
+  contactNumber: [validators.phone()],
+  photoURL: []
+}
+
+// Create initial values from props
+const initialValues = computed(() => ({
   displayName: props.initialData.displayName || '',
   username: props.initialData.username || '',
   status: props.initialData.status || 'unknown',
@@ -87,35 +95,43 @@ const formData = reactive({
   bio: props.initialData.bio || '',
   contactNumber: props.initialData.contactNumber || '',
   photoURL: props.initialData.photoURL || ''
-})
+}))
 
-// Update form data when initialData changes
-watch(() => props.initialData, (newData) => {
-  if (newData) {
-    formData.displayName = newData.displayName || ''
-    formData.username = newData.username || ''
-    formData.status = newData.status || 'unknown'
-    formData.gradYear = newData.gradYear?.toString() || null
-    formData.bio = newData.bio || ''
-    formData.contactNumber = newData.contactNumber || ''
-    formData.photoURL = newData.photoURL || ''
+// Enhanced reactive tracking of status
+const formStatus = ref(props.initialData.status || 'unknown')
+
+// Form needs to be accessed for dynamic UI changes based on values
+const formContext = inject<FormContext | null>('form', null)
+
+// Watch the form context for status changes
+watch(() => formContext?.values?.status, (newStatus) => {
+  if (newStatus) {
+    formStatus.value = newStatus
+    console.log('Status changed to:', newStatus)
   }
-}, { deep: true })
+}, { immediate: true })
 
-// Derived value to determine if gradYear should be shown
-const showGradYear = computed(() => ['student', 'alumni'].includes(formData.status))
+// Use formStatus for computing visibility instead of directly using formContext
+const showGradYear = computed(() => {
+  const status = formStatus.value
+  console.log('Computing showGradYear with status:', status)
+  return status === 'student' || status === 'alumni'
+})
 
 // Get current year and generate year options
 const currentYear = new Date().getFullYear()
 const gradYearOptions = computed(() => {
   const years = []
+  const status = formStatus.value // Use our reactive formStatus instead
 
-  if (formData.status === 'student') {
+  console.log('Computing gradYearOptions with status:', status)
+
+  if (status === 'student') {
     // For students, graduation years are typically in the future
     for (let year = currentYear; year <= currentYear + 5; year++) {
       years.push({ value: year.toString(), label: year.toString() })
     }
-  } else if (formData.status === 'alumni') {
+  } else if (status === 'alumni') {
     // For alumni, graduation years are in the past
     for (let year = currentYear; year >= 1926; year--) {
       years.push({ value: year.toString(), label: year.toString() })
@@ -125,16 +141,24 @@ const gradYearOptions = computed(() => {
   return years
 })
 
-// When status changes, set an appropriate default grad year if none exists
-const handleStatusChange = () => {
-  if (showGradYear.value) {
-    if (!formData.gradYear) {
-      formData.gradYear = formData.status === 'student' ?
-        currentYear.toString() :
-        currentYear.toString()
-    }
+// Improve status change handler to update our reactive ref
+const handleStatusChange = (newStatus: string) => {
+  console.log('handleStatusChange called with:', newStatus)
+  formStatus.value = newStatus // Update our local reactive reference first
+
+  if (!formContext) return
+
+  if (newStatus === 'student' || newStatus === 'alumni') {
+    // Set appropriate default grad year based on status
+    const defaultYear = newStatus === 'student'
+      ? currentYear.toString()
+      : (currentYear - 4).toString()
+
+    formContext.setValue('gradYear', defaultYear)
+    console.log('Set gradYear to:', defaultYear)
   } else {
-    formData.gradYear = null
+    formContext.setValue('gradYear', null)
+    console.log('Cleared gradYear')
   }
 }
 

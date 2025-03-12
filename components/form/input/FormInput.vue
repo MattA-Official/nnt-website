@@ -10,13 +10,15 @@
     </div>
 
     <input :id="id" :name="name" :type="type" :placeholder="placeholder" :required="required" :disabled="disabled"
-      v-model="innerValue" @blur="onBlur" class="form-input" :class="[varient, color, { 'error': hasError }]" />
-    <FormInputError v-if="hasError" :message="errorMessage" />
+      v-model="innerValue" @blur="onBlur" class="form-input"
+      :class="[varient, color, { 'error': formContext && formContext.errors[name] }]" />
+
+    <FormInputError v-if="formContext && formContext.errors[name]" :message="formContext.errors[name] ?? undefined" />
   </FormLayoutGroup>
 </template>
 
 <script setup lang="ts">
-import type { FormField, ValidationRule } from '~/types';
+import type { FormContext } from '~/types';
 
 const props = defineProps({
   modelValue: {
@@ -54,52 +56,25 @@ const props = defineProps({
   varient: {
     type: String,
     default: 'outline',
-    validator: (value: string) => ['outline'].includes(value) // styling varients
+    validator: (value: string) => ['outline'].includes(value)
   },
   color: {
     type: String,
     default: 'primary',
-    validator: (value: string) => ['primary', 'secondary', 'success', 'danger', 'warning', 'info'].includes(value) // color varients
-  },
-  error: { // TODO: display error message
-    type: String,
-    default: null
+    validator: (value: string) => ['primary', 'secondary', 'success', 'danger', 'warning', 'info'].includes(value)
   },
   type: {
     type: String,
     default: 'text',
     validator: (value: string) => ['text', 'email', 'password', 'number', 'tel'].includes(value)
-  },
-  rules: {
-    type: Array as PropType<ValidationRule[]>,
-    default: () => []
   }
 })
 
 const emit = defineEmits(['update:modelValue', 'change'])
 
-const groupPath = inject('groupPath', [] as string[])
-const registerFormField = inject('registerFormField') as (field: FormField) => void
-const getFormData = inject('getFormData') as () => { [key: string]: any }
-
-const hasError = ref(false)
-const errorMessage = ref('')
-
-const validateField = (value = props.modelValue) => {
-  hasError.value = false
-  errorMessage.value = ''
-
-  const formData = getFormData?.()
-
-  for (const rule of props.rules) {
-    if (!rule.validate(value, formData)) {
-      hasError.value = true
-      errorMessage.value = rule.message
-      return false
-    }
-  }
-  return true
-}
+// Form system integration with proper typing
+const formContext = inject<FormContext | null>('form', null)
+const registerFormField = inject<((field: { name: string, value: any }) => void) | null>('registerFormField', null)
 
 const innerValue = ref(props.modelValue)
 
@@ -111,50 +86,47 @@ watch(() => props.modelValue, (newValue) => {
 // Update modelValue when innerValue changes
 watch(innerValue, (newValue) => {
   emit('update:modelValue', newValue)
-  if (props.name) {
-    registerFormField({
-      name: props.name,
-      value: newValue,
-      groupPath
-    })
+
+  // Update form state
+  if (props.name && formContext) {
+    formContext.setValue(props.name, newValue)
   }
 })
 
 const onBlur = () => {
-  const value = innerValue.value?.toString().trim() // Could this cause issues if people want to use whitespace?
+  const value = innerValue.value?.toString().trim()
   innerValue.value = value
-  const isValid = validateField(value)
 
-  if (props.name) {
-    registerFormField({
-      name: props.name,
-      value,
-      groupPath,
-      isValid
-    })
+  if (formContext && props.name) {
+    formContext.setTouched(props.name)
   }
 }
 
 onMounted(() => {
   if (props.name) {
-    registerFormField({
-      name: props.name,
-      value: props.modelValue,
-      groupPath
-    })
+    // Register with form system if needed
+    if (registerFormField) {
+      registerFormField({
+        name: props.name,
+        value: props.modelValue
+      })
+    }
+
+    // Get the value from form context if available
+    if (formContext && formContext.values && props.name in formContext.values) {
+      innerValue.value = formContext.values[props.name]
+    }
   }
 })
 
-// Watch for modelValue changes
-watch(() => props.modelValue, (newValue) => {
-  if (props.name) {
-    registerFormField({
-      name: props.name,
-      value: newValue,
-      groupPath
-    })
-  }
-})
+// Add a watcher to listen for form context value changes
+if (props.name && formContext) {
+  watch(() => formContext.values[props.name], (newVal) => {
+    if (newVal !== undefined && newVal !== innerValue.value) {
+      innerValue.value = newVal
+    }
+  })
+}
 </script>
 
 <style scoped>

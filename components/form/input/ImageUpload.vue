@@ -23,12 +23,13 @@
         <input ref="fileInput" type="file" :name="name" accept="image/*" class="hidden-input"
             @change="handleFileChange" />
 
-        <FormInputError v-if="hasError" :message="errorMessage" />
+        <FormInputError v-if="formContext && formContext.errors[name]"
+            :message="formContext.errors[name] ?? undefined" />
     </div>
 </template>
 
 <script setup lang="ts">
-import type { FormField } from '~/types';
+import type { FormContext } from '~/types';
 
 const props = defineProps({
     modelValue: {
@@ -49,11 +50,10 @@ const emit = defineEmits(['update:modelValue']);
 const fileInput = ref<HTMLInputElement | null>(null);
 const previewUrl = ref<string | null>(null);
 const isUploading = ref(false);
-const hasError = ref(false);
-const errorMessage = ref('');
 
-const groupPath = inject('groupPath', [] as string[])
-const registerFormField = inject('registerFormField') as (field: FormField) => void
+// Form system integration with proper typing
+const formContext = inject<FormContext | null>('form', null);
+const registerFormField = inject<((field: { name: string, value: any }) => void) | null>('registerFormField', null);
 
 const triggerFileInput = () => {
     if (fileInput.value) {
@@ -69,21 +69,26 @@ const handleFileChange = async (event: Event) => {
 
     // Check file type
     if (!file.type.startsWith('image/')) {
-        hasError.value = true;
-        errorMessage.value = 'Please select an image file';
+        // Use setValue to set empty value and let validators handle the error
+        if (formContext && props.name) {
+            formContext.setValue(props.name, '');
+            formContext.setTouched(props.name); // Trigger validation
+        }
         return;
     }
 
     // Check file size (limit to 2MB)
     if (file.size > 2 * 1024 * 1024) {
-        hasError.value = true;
-        errorMessage.value = 'Image must be smaller than 2MB';
+        // Use setValue to set empty value and let validators handle the error
+        if (formContext && props.name) {
+            formContext.setValue(props.name, '');
+            formContext.setTouched(props.name); // Trigger validation
+        }
         return;
     }
 
-    // Clear previous errors
-    hasError.value = false;
-    errorMessage.value = '';
+    // No need to explicitly clear errors - setting a valid value will do this automatically
+    // when validation runs
 
     // Create a preview
     const reader = new FileReader();
@@ -99,8 +104,14 @@ const handleFileChange = async (event: Event) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        const { currentUser } = useAuth();
-        const idToken = await currentUser.value?.getIdToken();
+        // Use the new getUser function
+        const { getUser } = useAuth();
+        const user = await getUser();
+        if (!user) {
+            throw new Error('Not authenticated');
+        }
+
+        const idToken = await user.getIdToken();
 
         const response = await $fetch('/api/auth/upload-profile-picture', {
             method: 'POST',
@@ -113,19 +124,22 @@ const handleFileChange = async (event: Event) => {
         if (response?.url) {
             emit('update:modelValue', response.url);
 
-            // Register with form system if inside a form
-            if (props.name && registerFormField) {
+            // Update form state
+            if (formContext && props.name) {
+                formContext.setValue(props.name, response.url);
+            } else if (registerFormField && props.name) {
                 registerFormField({
                     name: props.name,
-                    value: response.url,
-                    groupPath,
-                    isValid: true
+                    value: response.url
                 });
             }
         }
     } catch (error: any) {
-        hasError.value = true;
-        errorMessage.value = error.message || 'Failed to upload image';
+        // Handle upload error by setting empty value and triggering validation
+        if (formContext && props.name) {
+            formContext.setValue(props.name, '');
+            formContext.setTouched(props.name);
+        }
         previewUrl.value = null;
     } finally {
         isUploading.value = false;
@@ -141,11 +155,13 @@ const removeImage = () => {
     previewUrl.value = null;
     emit('update:modelValue', '');
 
-    if (props.name && registerFormField) {
+    // Update form state
+    if (formContext && props.name) {
+        formContext.setValue(props.name, '');
+    } else if (registerFormField && props.name) {
         registerFormField({
             name: props.name,
-            value: '',
-            groupPath
+            value: ''
         });
     }
 
@@ -156,14 +172,53 @@ const removeImage = () => {
 
 // Initialize form field
 onMounted(() => {
-    if (props.name && registerFormField) {
+    if (formContext && props.name) {
+        // The form context will initialize the value
+    } else if (registerFormField && props.name) {
         registerFormField({
             name: props.name,
-            value: props.modelValue,
-            groupPath
+            value: props.modelValue
         });
     }
 });
+
+// Watch for model value changes
+watch(() => props.modelValue, (newValue) => {
+    if (newValue && !previewUrl.value) {
+        previewUrl.value = newValue;
+    }
+});
+
+onMounted(() => {
+    if (props.name) {
+        // Register with form system if needed
+        if (registerFormField) {
+            registerFormField({
+                name: props.name,
+                value: props.modelValue
+            })
+        }
+
+        // Get the value from form context if available
+        if (formContext && formContext.values && props.name in formContext.values) {
+            const formValue = formContext.values[props.name]
+            if (formValue) {
+                previewUrl.value = formValue
+                emit('update:modelValue', formValue)
+            }
+        }
+    }
+})
+
+// Add a watcher to listen for form context value changes
+if (props.name && formContext) {
+    watch(() => formContext.values[props.name], (newVal) => {
+        if (newVal && newVal !== previewUrl.value) {
+            previewUrl.value = newVal
+            emit('update:modelValue', newVal)
+        }
+    })
+}
 </script>
 
 <style scoped>

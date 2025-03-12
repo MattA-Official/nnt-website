@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Verify token and get user ID
-    const authHeader = getHeader(event, 'authorization')
+    const authHeader = getHeader(event, 'Authorization')
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw createError({
         statusCode: 401,

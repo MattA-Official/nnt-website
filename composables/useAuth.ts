@@ -1,16 +1,71 @@
 // composables/useAuth.ts
-import { ref } from 'vue'
-import { useCurrentUser, useFirebaseAuth } from 'vuefire'
+import { useCurrentUser, useFirebaseAuth, getCurrentUser } from 'vuefire'
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, createUserWithEmailAndPassword } from 'firebase/auth'
 import type { UserProfile } from '~/types'
 
 export const useAuth = () => {
+    // Use Nuxt's state management for hydration between server and client
+    const userProfile = useState<UserProfile | null>('userProfile', () => null)
+    const isLoading = useState<boolean>('auth:loading', () => false)
+    const error = useState<string | null>('auth:error', () => null)
+    const requiresSetup = useState<boolean>('auth:requiresSetup', () => false)
+    const authReady = useState<boolean>('auth:ready', () => false)
+
+    // Get current user from vuefire
     const currentUser = useCurrentUser()
-    const userProfile = ref<UserProfile | null>(null)
-    const isLoading = ref(false)
-    const error = ref<string | null>(null)
     const auth = useFirebaseAuth()!
-    const requiresSetup = ref(false)
+
+    // Function to safely get current user, waiting for auth to be ready
+    const getUser = async () => {
+        // If we already have a user or auth is ready and currentUser is null
+        // we can use the reactive currentUser value
+        if (currentUser.value !== undefined) {
+            return currentUser.value
+        }
+
+        // If auth is not ready yet, use getCurrentUser() which returns a promise
+        try {
+            isLoading.value = true
+            const user = await getCurrentUser()
+            authReady.value = true
+            return user
+        } catch (err) {
+            console.error('Error getting current user:', err)
+            return null
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    // Method to get the user profile from the server
+    const getProfile = async () => {
+        if (userProfile.value) return userProfile.value
+
+        // Get the user, waiting if necessary
+        const user = await getUser()
+        if (!user) return null
+
+        isLoading.value = true
+        error.value = null
+
+        try {
+            const idToken = await user.getIdToken()
+            const response = await $fetch<{ success: boolean, user: UserProfile }>('/api/auth/user', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${idToken}`
+                }
+            })
+
+            userProfile.value = response.user
+            return response.user
+        } catch (err: any) {
+            error.value = 'Failed to load profile'
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
 
     const loginWithGoogle = async () => {
         isLoading.value = true
@@ -58,17 +113,13 @@ export const useAuth = () => {
 
         try {
             // Sign in with email and password
-            const result = await signInWithEmailAndPassword(auth, email, password)
-            const idToken = await result.user.getIdToken()
+            await signInWithEmailAndPassword(auth, email, password)
 
-            // TODO: Get user profile from server
-            // const response = await $fetch('/api/auth/login', {
-            //     method: 'POST',
-            //     body: { idToken }
-            // })
+            // Get user profile from server
+            const response = await getProfile()
 
             // If successful, stay signed in
-            // return response
+            return response
         } catch (err: any) {
             switch (err.code) {
                 case 'auth/invalid-credential':
@@ -146,39 +197,16 @@ export const useAuth = () => {
         }
     }
 
-    const getProfile = async () => {
-        if (!currentUser.value) return null
-
-        isLoading.value = true
-        error.value = null
-
-        try {
-            const idToken = await currentUser.value.getIdToken()
-            const response = await $fetch<{ success: boolean, user: UserProfile }>('/api/auth/user', {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${idToken}`
-                }
-            })
-
-            userProfile.value = response.user
-            return response.user
-        } catch (err: any) {
-            error.value = 'Failed to load profile'
-            throw err
-        } finally {
-            isLoading.value = false
-        }
-    }
-
     const updateProfile = async (profileData: Partial<UserProfile>) => {
-        if (!currentUser.value) return null
+        // Get the user, waiting if necessary
+        const user = await getUser()
+        if (!user) return null
 
         isLoading.value = true
         error.value = null
 
         try {
-            const idToken = await currentUser.value.getIdToken()
+            const idToken = await user.getIdToken()
             const response = await $fetch<{ success: boolean, user: UserProfile }>('/api/auth/profile', {
                 method: 'PUT',
                 body: {
@@ -197,12 +225,19 @@ export const useAuth = () => {
         }
     }
 
+    // Computed property for authentication state that works with loading
+    const isAuthenticated = computed(() => !!currentUser.value)
+
+    // Return our enhanced auth methods
     return {
         currentUser,
         userProfile,
         isLoading,
         error,
         requiresSetup,
+        isAuthenticated,
+        authReady,
+        getUser,
         loginWithEmail,
         loginWithGoogle,
         logout,

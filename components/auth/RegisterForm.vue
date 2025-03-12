@@ -1,41 +1,59 @@
 <template>
-  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Register" :error="error ?? undefined">
+  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Register" :error="error ?? undefined"
+    :validators="formValidators" :initialValues="initialValues">
     <FormLayoutGroup type="column">
       <FormLayoutGroup>
         <FormInputLabel for="email" required>Email</FormInputLabel>
-        <FormInput id="email" name="email" type="email" placeholder="Enter your email" required
-          :rules="[required, email]" />
+        <FormInput id="email" name="email" type="email" placeholder="Enter your email" required />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
         <FormInputLabel for="password" required>Password</FormInputLabel>
-        <FormInput id="password" name="password" type="password" placeholder="Enter your password" required
-          :rules="[required, minLength(8)]" />
+        <FormInput id="password" name="password" type="password" placeholder="Enter your password" required />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
-        <!-- FIXME: Edgecase sometimes means "match" doesn't verify correctly -->
         <FormInputLabel for="confirmPassword" required>Confirm Password</FormInputLabel>
         <FormInput id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm your password"
-          required :rules="[required, match('password')]" />
+          required />
       </FormLayoutGroup>
     </FormLayoutGroup>
   </FormBase>
 </template>
 
 <script setup lang="ts">
-import { required, email, minLength, match } from '~/types/form'
+import { validators } from '~/types/form'
 
 const props = defineProps<{
   redirect?: string
 }>()
 
-const { register, isLoading, error } = useAuth()
+const { register, isLoading, error } = await useAuth()
 const router = useRouter()
 
-const handleSubmit = async (data: { email: string; password: string; confirmPassword: string }) => {
-  if (!data.email || !data.password) return
+// Define form validators
+const formValidators = {
+  email: [
+    validators.required(),
+    validators.email()
+  ],
+  password: [
+    validators.required(),
+    validators.minLength(8, "Password must be at least 8 characters")
+  ],
+  confirmPassword: [
+    validators.required("Please confirm your password"),
+    validators.match("password", "Passwords do not match")
+  ]
+}
 
+const initialValues = {
+  email: '',
+  password: '',
+  confirmPassword: ''
+}
+
+const handleSubmit = async (data: { email: string; password: string; confirmPassword: string }) => {
   try {
     const result = await register(data.email, data.password)
 

@@ -2,100 +2,21 @@
   <form @submit.prevent="handleSubmit" ref="formRef" class="base-form">
     <slot></slot>
     <FormButtonGroup v-if="showActions">
-      <FormButtonSubmit :disabled="loading || isSubmitting" @submit.prevent="handleSubmit">
+      <FormButtonSubmit :disabled="loading || isSubmitting" @submit="handleSubmit">
         {{ submitLabel }}
       </FormButtonSubmit>
       <FormButtonCancel v-if="showCancel" @cancel="handleCancel">
         {{ cancelLabel }}
       </FormButtonCancel>
     </FormButtonGroup>
-    <FormFeedbackError v-if="error">{{ error }}</FormFeedbackError>
+    <FormFeedbackError v-if="formError || error">{{ formError || error }}</FormFeedbackError>
   </form>
 </template>
 
 <script setup lang="ts">
-import type { FormField, FormGroup } from '~/types'
+import type { FormValidator, FormContext } from '~/types'
 
-const formData = ref<{ [key: string]: any }>({})
-
-const formStructure = ref<FormGroup>({
-  fields: {},
-  groups: {}
-})
-
-// Make formData reactive to formStructure changes
-watch(formStructure, () => {
-  updateFormData()
-}, { deep: true })
-
-// Updated registration method for nested structure
-provide('registerFormField', (field: FormField) => {
-  let target = formStructure.value
-  if (field.groupPath) {
-    for (const groupName of field.groupPath) {
-      if (!target.groups[groupName]) {
-        target.groups[groupName] = { fields: {}, groups: {} }
-      }
-      target = target.groups[groupName]
-    }
-  }
-  target.fields[field.name] = field.value
-  if (field.isValid !== undefined) {
-    target.fields[`${field.name}_valid`] = field.isValid
-  }
-  updateFormData()
-})
-
-// Function to flatten form structure into formData
-const updateFormData = () => {
-  formData.value = flattenFormStructure(formStructure.value)
-}
-
-const flattenFormStructure = (group: FormGroup): { [key: string]: any } => {
-  let result: { [key: string]: any } = {}
-
-  // Add direct fields
-  if (Object.keys(group.fields).length > 0) {
-    result = { ...group.fields }
-  }
-
-  // Add nested groups recursively
-  Object.entries(group.groups).forEach(([groupName, groupData]) => {
-    result[groupName] = flattenFormStructure(groupData)
-  })
-
-  return result
-}
-
-// Provide an update method for child components
-provide('updateFormField', (name: string, value: any) => {
-  formData.value[name] = value
-})
-
-const getFormData = () => {
-  return flattenFormStructure(formStructure.value)
-}
-
-// Provide form data access to child components
-provide('getFormData', getFormData)
-
-const validateForm = (): boolean => {
-  const validateGroup = (group: FormGroup): boolean => {
-    // Check if any field in this group or its subgroups is invalid
-    const fieldsValid = Object.keys(group.fields)
-      .filter(key => key.endsWith('_valid'))
-      .every(key => group.fields[key] === true)
-
-    const subgroupsValid = Object.values(group.groups)
-      .every(subgroup => validateGroup(subgroup))
-
-    return fieldsValid && subgroupsValid
-  }
-
-  return validateGroup(formStructure.value)
-}
-
-defineProps({
+const props = defineProps({
   showActions: {
     type: Boolean,
     default: true
@@ -120,14 +41,14 @@ defineProps({
     type: String,
     default: null
   },
-  onSubmit: {
-    type: Function,
-    default: (data: any) => undefined
+  validators: {
+    type: Object as PropType<Record<string, FormValidator[]>>,
+    default: () => ({})
   },
-  onCancel: {
-    type: Function,
-    default: () => undefined
-  }
+  initialValues: {
+    type: Object,
+    default: () => ({})
+  },
 })
 
 const emit = defineEmits<{
@@ -136,28 +57,42 @@ const emit = defineEmits<{
 }>()
 
 const formRef = ref<HTMLFormElement | null>(null)
+const formError = ref<string | null>(null)
 const isSubmitting = ref(false)
 
-const handleSubmit = async (event: Event) => {
-  if (isSubmitting.value) return
+// Initialize form with useForm composable
+const form = useForm({
+  initialValues: props.initialValues,
+  validators: props.validators
+}) as unknown as FormContext
 
-  // Trigger validation on all fields
-  if (!validateForm()) {
-    console.error('Form validation failed')
-    return
-  }
+// Registration method for field management
+provide('registerFormField', (field: { name: string, value: any }) => {
+  form.registerField(field.name, field.value);
+})
 
+// Provide an update method for child components
+provide('updateFormField', (name: string, value: any) => {
+  form.setValue(name, value)
+})
+
+// Provide form data access to child components
+provide('getFormData', () => form.values)
+
+const handleSubmit = async () => {
+  formError.value = null
   isSubmitting.value = true
 
   try {
-    // Use formData object directly instead of flattening
-    const data = flattenFormStructure(formStructure.value)
+    const isValid = await form.validateForm()
 
-    // log the data to the console for debugging
-    console.log('Form data:', data)
-
-    emit('submit', data)
-  } catch (error) {
+    if (isValid) {
+      emit('submit', form.values)
+    } else {
+      formError.value = 'Please fix the errors in the form'
+    }
+  } catch (error: any) {
+    formError.value = error.message || 'An error occurred during form submission'
     console.error('Form submission error:', error)
   } finally {
     isSubmitting.value = false
@@ -168,8 +103,13 @@ const handleCancel = () => {
   emit('cancel')
 }
 
-// Provide form validation context
-provide('formValidation', {
-  validateForm
-})
+// Provide form context to children with proper typing
+provide<FormContext>('form', form)
+
+// Watch for changes in initialValues and update form fields accordingly
+watch(() => props.initialValues, (newVals) => {
+  Object.keys(newVals).forEach(key => {
+    form.setValue(key, newVals[key])
+  })
+}, { deep: true })
 </script>
