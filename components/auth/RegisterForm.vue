@@ -1,21 +1,23 @@
 <template>
-  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Register" :error="error ?? undefined"
-    :validators="formValidators" :initialValues="initialValues">
+  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Register" :validators="formValidators"
+    :initialValues="initialValues">
     <FormLayoutGroup type="column">
       <FormLayoutGroup>
         <FormInputLabel for="email" required>Email</FormInputLabel>
-        <FormInput id="email" name="email" type="email" placeholder="Enter your email" required />
+        <FormInput id="email" name="email" type="email" placeholder="Enter your email" required
+          autocomplete="username" />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
         <FormInputLabel for="password" required>Password</FormInputLabel>
-        <FormInput id="password" name="password" type="password" placeholder="Enter your password" required />
+        <FormInput id="password" name="password" type="password" placeholder="Enter your password" required
+          autocomplete="new-password" />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
         <FormInputLabel for="confirmPassword" required>Confirm Password</FormInputLabel>
         <FormInput id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm your password"
-          required />
+          required autocomplete="new-password" />
       </FormLayoutGroup>
     </FormLayoutGroup>
   </FormBase>
@@ -34,11 +36,11 @@ const router = useRouter()
 // Define form validators
 const formValidators = {
   email: [
-    validators.required(),
-    validators.email()
+    validators.required("Email is required"),
+    validators.email("Please enter a valid email address")
   ],
   password: [
-    validators.required(),
+    validators.required("Password is required"),
     validators.minLength(8, "Password must be at least 8 characters")
   ],
   confirmPassword: [

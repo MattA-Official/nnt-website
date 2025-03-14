@@ -84,12 +84,10 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    const isValid = await form.validateForm()
+    const isValid = form.validateForm()
 
     if (isValid) {
       emit('submit', form.values)
-    } else {
-      formError.value = 'Please fix the errors in the form'
     }
   } catch (error: any) {
     formError.value = error.message || 'An error occurred during form submission'

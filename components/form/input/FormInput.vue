@@ -11,7 +11,7 @@
 
     <input :id="id" :name="name" :type="type" :placeholder="placeholder" :required="required" :disabled="disabled"
       v-model="innerValue" @blur="onBlur" class="form-input"
-      :class="[varient, color, { 'error': formContext && formContext.errors[name] }]" />
+      :class="[varient, color, { 'error': formContext && formContext.errors[name] }]" :autocomplete />
 
     <FormInputError v-if="formContext && formContext.errors[name]" :message="formContext.errors[name] ?? undefined" />
   </FormLayoutGroup>
@@ -67,6 +67,10 @@ const props = defineProps({
     type: String,
     default: 'text',
     validator: (value: string) => ['text', 'email', 'password', 'number', 'tel'].includes(value)
+  },
+  autocomplete: {
+    type: String,
+    required: false
   }
 })
 

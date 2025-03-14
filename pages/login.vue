@@ -3,7 +3,7 @@
     <div class="login-box">
       <h2>Login to New Theatre</h2>
 
-      <AuthLoginForm />
+      <AuthLoginForm :redirect="$route.query.redirect?.toString() || '/'" />
 
       <div class="divider">
         <span>or</span>
@@ -35,8 +35,12 @@ const handleGoogleLogin = async () => {
 
   try {
     await loginWithGoogle()
-    // Redirect to dashboard on success
-    router.push('/admin')
+    // Redirect to dashboard on success, unless a redirect query is present
+    if (router.currentRoute.value.redirectedFrom) {
+      navigateTo(router.currentRoute.value.redirectedFrom)
+    } else {
+      navigateTo('/admin')
+    }
   } catch (err) {
     // Error is already handled in the composable
   }

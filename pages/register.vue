@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-const { isLoading, error } = useAuth()
+const { isLoading, error } = await useAuth()
 const router = useRouter()
 
 definePageMeta({

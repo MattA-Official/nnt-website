@@ -1,10 +1,11 @@
 <template>
-  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Login" :error="error ?? undefined"
-    :validators="formValidators" :initialValues="initialValues">
+  <FormBase :onSubmit="handleSubmit" :loading="isLoading" submit-label="Login" :validators="formValidators"
+    :initialValues="initialValues">
     <FormLayoutGroup type="column">
       <FormLayoutGroup>
         <FormInputLabel for="email" required>Email</FormInputLabel>
-        <FormInput id="email" name="email" type="email" placeholder="Enter your email" required />
+        <FormInput id="email" name="email" type="email" placeholder="Enter your email" required
+          autocomplete="username" />
       </FormLayoutGroup>
 
       <FormLayoutGroup>
@@ -28,8 +29,8 @@ const { loginWithEmail, isLoading, error } = useAuth()
 // Define form validators
 const formValidators = {
   email: [
-    validators.required(),
-    validators.email()
+    validators.required("Email is required"),
+    validators.email("Please enter a valid email address")
   ],
   password: [
     validators.required("Password is required")
