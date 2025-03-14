@@ -33,14 +33,14 @@ const { pageData, tocLinks } = usePageData()
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
-  max-width: 1200px;
+  max-width: calc(var(--page-max-width) + 4rem);
   margin: 0 auto;
   padding: 0 2rem;
 }
 
 .toc-wrapper {
   display: none;
-  padding: 4rem 4rem 0 0;
+  padding: 4rem 2rem 0 0;
   top: 4rem;
 }
 
